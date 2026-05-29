@@ -1,0 +1,49 @@
+databaseChangeLog:
+    - changeSet:
+          id: 004_create_classes_table
+          author: tola.dev001@gmail.com
+          changes:
+              - createTable:
+                    tableName: tbl_class
+                    columns:
+                        - column:
+                              name: class_id
+                              type: uuid
+                              defaultValueComputed: gen_random_uuid()
+                              constraints:
+                                  primaryKey: true
+                                  nullable: false
+                        - column:
+                              name: class_name
+                              type: varchar(100)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: department_id
+                              type: uuid
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: academic_year
+                              type: varchar(50)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: generation
+                              type: int
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: creation_at
+                              type: date
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: update_at
+                              type: date
+              - addForeignKeyConstraint:
+                    baseTableName: tbl_class
+                    baseColumnNames: department_id
+                    referencedTableName: tbl_department
+                    referencedColumnNames: department_id
+                    constraintName: fk_class_department
