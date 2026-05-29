@@ -1,34 +1,33 @@
-name: CI/CD Pipeline
+name: Java Spring Boot CI/CD Pipeline
 
+# ចាប់ផ្ដើមដំណើរការនៅពេលមានសកម្មភាពលើ branch main និង dev
 on:
   push:
-    branches: ["main"]
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # 1. ទាញយកកូដពី GitHub Repository មកកាន់ Runner
+    - name: Checkout source code
+      uses: actions/checkout@v4
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '21'
+    # 2. ដំឡើង JDK (សូមប្ដូរ java-version ទៅតាមជំនាន់ project របស់អ្នក ឧទាហរណ៍៖ 17 ឬ 21)
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17' # កែប្រែត្រង់នេះបើប្រើ Java 21
+        distribution: 'temurin'
+        cache: maven # ជួយឱ្យការ build លើកក្រោយៗលឿនជាងមុន (ប្ដូរទៅ gradle បើប្រើ Gradle)
 
-      - name: build with maven
-        run: mvn clean package
+    # 3. បើកសិទ្ធិឱ្យ execute file mvnw (សម្រាប់តែ Linux/macOS)
+    - name: Grant execute permission for mvnw
+      run: chmod +x mvnw
 
-
-      - name: Build Docker Image
-        run: docker build -t bouky_university_system .
-
-      - name: Login to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Push Docker Image
-        run: |
-          docker tag bouky_university_system ${{ secrets.DOCKER_USERNAME }}/bouky_university_system:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/bouky_university_system:latest
+    # 4. រត់ការ Compile និង Test កូដទាំងអស់ (បើមាន Error វានឹងហាមឃាត់មិនឱ្យ Merge)
+    - name: Build and Test with Maven
+      run: ./mvnw clean verify
