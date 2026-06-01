@@ -1,10 +1,20 @@
 package com.kh.rupp_dev.boukryuniversity.repository;
 
-import com.kh.rupp_dev.boukryuniversity.entity.AttendanceRecord;
-import com.kh.rupp_dev.boukryuniversity.entity.AttendanceSession;
-import com.kh.rupp_dev.boukryuniversity.entity.Student;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.kh.rupp_dev.boukryuniversity.entity.AttendanceRecord;
+
 public interface AttendanceRecordRepository extends JpaRepository<AttendanceRecord, Long> {
-    boolean existsByStudentAndSession(Student student, AttendanceSession session);
+
+    boolean existsByStudentAndSession(UUID student, Long session);
+
+    List<AttendanceRecord> findBySessionId(Long sessionId);
+
+    List<AttendanceRecord> findByStudentId(UUID studentId);
+
+    List<AttendanceRecord> findBySessionId(UUID sessionId);
+
 }
