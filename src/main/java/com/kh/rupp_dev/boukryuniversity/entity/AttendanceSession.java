@@ -24,8 +24,8 @@ public class AttendanceSession {
       private Long id;
 
       @ManyToOne(fetch=FetchType.LAZY)
-      @JoinColumn(name="class_id", referencedColumnName="class_id")
-      private Class classId;
+      @JoinColumn(name="class_id", referencedColumnName="id")
+      private Class clazz;
 
       @Column( nullable = false )
       private LocalDateTime startTime;
@@ -37,6 +37,7 @@ public class AttendanceSession {
       private String qrToken;
 
       @Enumerated(EnumType.STRING)
+      @Column(nullable = false)
       private SessionStatus status;
 
 }

@@ -6,10 +6,12 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.kh.rupp_dev.boukryuniversity.entity.AttendanceRecord;
+import com.kh.rupp_dev.boukryuniversity.entity.AttendanceSession;
+import com.kh.rupp_dev.boukryuniversity.entity.Student;
 
 public interface AttendanceRecordRepository extends JpaRepository<AttendanceRecord, Long> {
 
-    boolean existsByStudentAndSession(UUID student, Long session);
+    boolean existsByStudentAndSession(Student student, AttendanceSession session);
 
     List<AttendanceRecord> findBySessionId(Long sessionId);
 

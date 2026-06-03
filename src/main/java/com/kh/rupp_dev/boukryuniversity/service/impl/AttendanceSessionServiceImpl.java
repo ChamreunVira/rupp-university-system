@@ -25,9 +25,11 @@ public class AttendanceSessionServiceImpl implements AttendaceSessionService {
     @Override
     public AttendanceSession createSession(UUID classId) {
 
-        Class clazz = classRepository.findById(classId).orElseThrow();
+        Class clazz = classRepository.findById(classId)
+            .orElseThrow(() -> new ResourceNotFoundException("Class not found"));
 
         AttendanceSession session = AttendanceSession.builder()
+                .clazz(clazz)
                 .qrToken(qrService.generateToken())
                 .startTime(LocalDateTime.now())
                 .endTime(LocalDateTime.now().plusMinutes(15))
