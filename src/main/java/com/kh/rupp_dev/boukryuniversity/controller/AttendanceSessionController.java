@@ -22,7 +22,7 @@ public class AttendanceSessionController {
  
     @PostMapping
     public AttendanceSession create(@RequestBody CreateSessionRequest request) {
-        return service.createSession(request);
+        return service.createSession(request.classId());
     }
 
     @PatchMapping("/{id}/close")
