@@ -18,7 +18,7 @@ public class OpenApiConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Scoring Management System API")
+                        .title("RUPP Management System API")
                         .description("REST API documentation for Scoring Management System")
                         .version("1.0.0")
                         .contact(new Contact()

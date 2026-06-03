@@ -19,6 +19,10 @@ public class StudentResponse {
 
     private UUID id;
 
+    private UUID departmentId;
+    
+    private String departmentName;
+
     private UUID classId;
     
     private String className;
