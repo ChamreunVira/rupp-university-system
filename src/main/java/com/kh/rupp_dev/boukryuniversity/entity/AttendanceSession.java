@@ -24,7 +24,7 @@ public class AttendanceSession {
       private Long id;
 
       @ManyToOne(fetch=FetchType.LAZY)
-      @JoinColumn(name="class_id", referencedColumnName="id")
+      @JoinColumn(name="class_id")
       private Class clazz;
 
       @Column( nullable = false )
