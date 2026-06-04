@@ -2,6 +2,7 @@ package com.kh.rupp_dev.boukryuniversity.exception;
 
 import com.kh.rupp_dev.boukryuniversity.payload.ErrorResponse;
 import io.jsonwebtoken.JwtException;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpHeaders;
 import java.util.HashMap;
@@ -66,7 +67,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected @Nullable ResponseEntity<Object> handleHttpMessageNotReadable(
             org.springframework.http.converter.HttpMessageNotReadableException ex, HttpHeaders headers,
-            HttpStatusCode status, WebRequest request) {
+            HttpStatusCode status, @NonNull WebRequest request) {
         String exactErrorMsg = ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
