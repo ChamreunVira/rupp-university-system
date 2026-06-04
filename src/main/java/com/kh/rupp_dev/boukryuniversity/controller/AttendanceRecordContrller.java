@@ -21,4 +21,5 @@ public class AttendanceRecordContrller {
     public void chcekIn( @RequestBody CheckInRequest request) {
         service.checkIn(request);
     }
+
 }
