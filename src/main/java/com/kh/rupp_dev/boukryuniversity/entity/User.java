@@ -36,6 +36,12 @@ public class User implements UserDetails {
 	@Column(name = "password_hash", nullable = false , length = 255)
 	private String password;
 
+	@Column(name = "phone_number" , length = 12)
+	private String phoneNumber;
+
+	@Column(name = "bio" , length = 255)
+	private String bio;
+
 	@Column(name = "verification_token")
 	private String verificationToken;
 

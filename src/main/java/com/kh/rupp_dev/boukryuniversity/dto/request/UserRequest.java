@@ -1,6 +1,7 @@
 package com.kh.rupp_dev.boukryuniversity.dto.request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,11 @@ public class UserRequest {
     @Email(message = "Email must be valid.")
     @Size(min = 5 , max = 100 , message = "Email must be between 5 and 100 characters.")
     private String email;
+
+    @Size(min = 9 , max = 12 , message = "Phone number must be exceed 9 and 12.")
+    private String phoneNumber;
+
+    private String bio;
 
     @NotBlank(message = "Password is required.")
     @Size(min = 5 , message = "Password at least must be 5 characters up.")
