@@ -38,8 +38,8 @@ public class CourseRequest {
 
     private String schedule;
 
-    @Valid
-    @NotEmpty(message = "At least one course schedule is required.")
+//    @Valid
+//    @NotEmpty(message = "At least one course schedule is required.")
     private List<CourseScheduleRequest> schedules;
 
     @NotBlank(message = "Start at is required.")

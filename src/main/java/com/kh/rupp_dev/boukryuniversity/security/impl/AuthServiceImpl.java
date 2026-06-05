@@ -265,7 +265,10 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public UserResponse me() {
 		User user = this.getUserAuthenticated();
-		return userMapper.toResponse(user);
+		UserResponse response = userMapper.toResponse(user);
+		response.setRefreshToken(user.getRefreshToken().getToken());
+		response.setRole(user.getRole().getName());
+		return response;
 	}
 
 }

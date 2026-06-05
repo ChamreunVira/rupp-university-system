@@ -81,7 +81,7 @@ public class UserController {
 	@GetMapping("/me")
 	public ResponseEntity<SingleResponse<UserResponse>> me() {
 		UserResponse response = authService.me();
-		return ResponseEntity.ok().body(SingleResponse.success("Successfully to retrieve infomation user." , response));
+		return ResponseEntity.ok().body(SingleResponse.success("Successfully to retrieve information user." , response));
 	}
 
 }

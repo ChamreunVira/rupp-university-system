@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -22,4 +23,8 @@ public class DepartmentResponse {
     private String code;
 
     private String description;
+
+    private LocalDate creationAt;
+
+    private LocalDate updatedAt;
 }

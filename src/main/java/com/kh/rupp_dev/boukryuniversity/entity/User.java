@@ -80,12 +80,6 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "instructor" ,  cascade = CascadeType.ALL)
 	private List<Course> courses;
 
-	@Column(name = "totp_secret")
-	private String totpSecret;
-
-	@Column(name = "totp_enabled", nullable = false)
-	private boolean totpEnabled = false;
-
 	@Override
 	@NullMarked
 	public Collection<? extends GrantedAuthority> getAuthorities() {
