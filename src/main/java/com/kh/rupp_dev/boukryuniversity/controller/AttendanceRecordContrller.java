@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/attendance")
+@RequestMapping("/api/v1/attendance")
 @RequiredArgsConstructor
 public class AttendanceRecordContrller {
     

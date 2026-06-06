@@ -1,9 +1,13 @@
 package com.kh.rupp_dev.boukryuniversity.service.impl;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.kh.rupp_dev.boukryuniversity.entity.ClassSchedule;
+import com.kh.rupp_dev.boukryuniversity.exception.SessionNotFoundException;
+import com.kh.rupp_dev.boukryuniversity.repository.ClassScheduleRepository;
 import org.springframework.stereotype.Service;
 
 import com.kh.rupp_dev.boukryuniversity.constant.AttendanceStatus;
@@ -28,20 +32,25 @@ public class AttendaceRecordServiceImpl implements AttendanceRecordService {
     private final AttendanceSessionRepository sessionRepository;
     private final AttendanceRecordRepository recordRepository;
     private final StudentRepository studentRepository;
+    private final ClassScheduleRepository scheduleRepository;
 
     @Override
     public void checkIn(CheckInRequest request) {
 
         AttendanceSession session = sessionRepository.findByQrToken(request.token())
-            .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
+            .orElseThrow(() -> new SessionNotFoundException("Session not found"));
 
         if (session.getStatus() != SessionStatus.ACTIVE) {
-            throw new RuntimeException("Session closed");
+            throw new SessionNotFoundException("Session closed");
         }
 
         if (session.getEndTime().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("QR expired");
+            throw new SessionNotFoundException("QR expired");
         }
+
+        DayOfWeek today = LocalDateTime.now().getDayOfWeek();
+        ClassSchedule schedule = scheduleRepository.findByClassId(request.classId())
+                .orElseThrow(() -> new ResourceNotFoundException("Class not found with: " + request.classId()));
 
         Student student = studentRepository.findById(request.studentId())
             .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
