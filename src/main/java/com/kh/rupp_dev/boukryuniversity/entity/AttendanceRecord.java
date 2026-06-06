@@ -16,7 +16,7 @@ public class AttendanceRecord {
       
       @Id
       @GeneratedValue(strategy=GenerationType.IDENTITY)
-      private Long id;
+      private Integer id;
 
       @ManyToOne(fetch=FetchType.LAZY)
       @JoinColumn(name="student_id")

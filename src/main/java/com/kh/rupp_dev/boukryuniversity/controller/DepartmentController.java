@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/departments")
@@ -35,20 +34,20 @@ public class DepartmentController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<SingleResponse<DepartmentResponse>> getById(@PathVariable UUID id) {
+	public ResponseEntity<SingleResponse<DepartmentResponse>> getById(@PathVariable Integer id) {
 		DepartmentResponse response = departmentService.getById(id);
 		return ResponseEntity.ok(SingleResponse.success("Successfully retrieved department.", response));
 	}
 
 	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<SingleResponse<DepartmentResponse>> update(@PathVariable UUID id,
+	public ResponseEntity<SingleResponse<DepartmentResponse>> update(@PathVariable Integer id,
 			@Valid @ModelAttribute DepartmentRequest request) {
 		DepartmentResponse response = departmentService.update(id, request);
 		return ResponseEntity.ok(SingleResponse.success("Successfully updated department.", response));
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable UUID id) {
+	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable Integer id) {
 		departmentService.delete(id);
 		return ResponseEntity.ok(SingleResponse.success("Successfully deleted department.", null));
 	}

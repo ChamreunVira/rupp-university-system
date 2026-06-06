@@ -65,7 +65,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public RoleResponse update(UUID uuid, RoleRequest request) {
+	public RoleResponse update(Integer uuid, RoleRequest request) {
 		Role role = findByOrThrow(uuid);
 
 		if (request.getName() != null) {
@@ -107,14 +107,14 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public RoleResponse findById(UUID uuid) {
+	public RoleResponse findById(Integer uuid) {
 		Role role = findByOrThrow(uuid);
 		log.info("Role found with id {}", role.getId());
 		return toResponse(role);
 	}
 
 	@Override
-	public void updateStatus(UUID uuid, String status) {
+	public void updateStatus(Integer uuid, String status) {
 		Role role = findByOrThrow(uuid);
 		role.setStatus(status);
 		roleRepository.save(role);
@@ -130,7 +130,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public RoleResponse addPermission(UUID roleId, AssignPermissionRequest request) {
+	public RoleResponse addPermission(Integer roleId, AssignPermissionRequest request) {
 
 		Role role = findByOrThrow(roleId);
 		Set<Permission> permissions = permissionRepository.findByIdIn(request.getPermissionIds());
@@ -141,7 +141,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public RoleResponse setPermission(UUID roleId, AssignPermissionRequest request) {
+	public RoleResponse setPermission(Integer roleId, AssignPermissionRequest request) {
 		Role role = findByOrThrow(roleId);
 		Set<Permission> permissions = permissionRepository.findByIdIn(request.getPermissionIds());
 		role.getPermissions().clear();
@@ -153,13 +153,13 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public void deletePermission(UUID roleId, UUID permissionId) {
+	public void deletePermission(Integer roleId, Integer permissionId) {
 		Role role = findByOrThrow(roleId);
 		role.getPermissions().removeIf(permission -> permission.getId().equals(permissionId));
 		roleRepository.save(role);
 	}
 
-	private Role findByOrThrow(UUID roleId) {
+	private Role findByOrThrow(Integer roleId) {
 		return roleRepository.findById(roleId)
 				.orElseThrow(() -> new ResourceNotFoundException("Role not found with ID: " + roleId));
 	}
@@ -167,7 +167,7 @@ public class RoleServiceImpl implements RoleService {
 	private RoleResponse toResponse(Role role) {
 		RoleResponse response = roleMapper.toResponse(role);
 		if(role.getUsers() != null && !role.getUsers().isEmpty()) {
-			List<UUID> uuids = role.getUsers().stream()
+			List<Integer> uuids = role.getUsers().stream()
 					.map(User::getId)
 					.toList();
 			response.setUserIds(uuids);

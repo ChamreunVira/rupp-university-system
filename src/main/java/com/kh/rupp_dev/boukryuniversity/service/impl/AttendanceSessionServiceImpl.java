@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class AttendanceSessionServiceImpl implements AttendaceSessionService {
     private final QrService qrService;
 
     @Override
-    public AttendanceSession createSession(UUID classId) {
+    public AttendanceSession createSession(Integer classId) {
 
         Class clazz = classRepository.findById(classId)
             .orElseThrow(() -> new ResourceNotFoundException("Class not found"));
@@ -40,13 +39,13 @@ public class AttendanceSessionServiceImpl implements AttendaceSessionService {
     }
 
     @Override
-    public AttendanceSession findById(Long sessionId) {
+    public AttendanceSession findById(Integer sessionId) {
         return sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
     }
 
     @Override
-    public void closeSession(Long sessionId) {
+    public void closeSession(Integer sessionId) {
 
         AttendanceSession session = sessionRepository.findById(sessionId)
                 .orElseThrow();

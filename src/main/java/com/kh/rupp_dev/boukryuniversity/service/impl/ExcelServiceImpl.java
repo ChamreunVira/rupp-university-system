@@ -23,7 +23,6 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -78,7 +77,7 @@ public class ExcelServiceImpl implements ExcelService {
     }
 
     @Override
-    public ByteArrayInputStream exportStudent(UUID classId) {
+    public ByteArrayInputStream exportStudent(Integer classId) {
         try {
             Class clazz = classRepository.findById(classId)
                     .orElseThrow(() -> new ResourceNotFoundException("Class not found with ID: " + classId));

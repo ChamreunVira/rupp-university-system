@@ -20,7 +20,7 @@ public class AttendanceSessionController {
     }
 
     @PatchMapping("/{id}/close")
-    public void close(@PathVariable Long id) {
+    public void close(@PathVariable Integer id) {
         service.closeSession(id);
     }
 

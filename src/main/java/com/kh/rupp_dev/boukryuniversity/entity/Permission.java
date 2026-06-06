@@ -9,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_permission")
@@ -20,9 +19,9 @@ import java.util.UUID;
 public class Permission {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "permission_id")
-	private UUID id;
+	private Integer id;
 
 	@Column(name = "permission_name" , nullable = false , length = 20)
 	private String name;

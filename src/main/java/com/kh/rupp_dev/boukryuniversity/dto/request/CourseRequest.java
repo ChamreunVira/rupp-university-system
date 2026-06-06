@@ -11,7 +11,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -20,13 +19,13 @@ import java.util.UUID;
 public class CourseRequest {
 
     @NotNull(message = "Subject ID is required.")
-    private UUID subjectId;
+    private Integer subjectId;
 
     @NotNull(message = "Semester ID is required.")
-    private UUID semesterId;
+    private Integer semesterId;
 
     @NotNull(message = "Instructor ID is required.")
-    private UUID instructorId;
+    private Integer instructorId;
 
     @NotBlank(message = "Name is required.")
     @Size(min = 2 , max = 50 , message = "Name must be between 2 and 50 characters.")

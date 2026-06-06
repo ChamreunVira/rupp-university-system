@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +14,7 @@ import java.util.UUID;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class StudentAddressRequest {
-    private UUID id;
+    private Integer id;
     private String houseNumber;
     private String street;
     private String sangkat;

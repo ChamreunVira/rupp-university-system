@@ -2,7 +2,6 @@ package com.kh.rupp_dev.boukryuniversity.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.UUID;
 
 import com.kh.rupp_dev.boukryuniversity.dto.request.ImportStudentRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.request.PaginationRequest;
@@ -43,7 +42,7 @@ public class StudentsController {
 	}
 
 	@GetMapping(path = "/{uuid}")
-	public ResponseEntity<SingleResponse<StudentResponse>> getById(@PathVariable UUID uuid) {
+	public ResponseEntity<SingleResponse<StudentResponse>> getById(@PathVariable Integer uuid) {
 		StudentResponse studentsResponse = studentService.getById(uuid);
 		log.info("getByUuid: {}", uuid);
 		return ResponseEntity.ok(SingleResponse.success("Successfully retrieved student.", studentsResponse));
@@ -57,20 +56,20 @@ public class StudentsController {
 	}
 
 	@PutMapping(path = "/{uuid}")
-	public ResponseEntity<SingleResponse<StudentResponse>> update(@PathVariable UUID uuid,
+	public ResponseEntity<SingleResponse<StudentResponse>> update(@PathVariable Integer uuid,
 																  @Valid @RequestBody StudentRequest request) {
 		StudentResponse response = studentService.update(uuid, request);
 		return ResponseEntity.ok(SingleResponse.success("Successfully updated student.", response));
 	}
 
 	@DeleteMapping(path = "/{uuid}")
-	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable UUID uuid) {
+	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable Integer uuid) {
 		studentService.delete(uuid);
 		return ResponseEntity.ok(SingleResponse.success("Successfully deleted student.", null));
 	}
 
 	@GetMapping(path = "/{uuid}/classes")
-	public ResponseEntity<SingleResponse<ClassResponse>> getClassByStudentId(@PathVariable UUID uuid) {
+	public ResponseEntity<SingleResponse<ClassResponse>> getClassByStudentId(@PathVariable Integer uuid) {
 		ClassResponse response = studentService.getClassByStudentId(uuid);
 		return ResponseEntity.ok(SingleResponse.success("Successfully retrieved student class.", response));
 	}
@@ -82,7 +81,7 @@ public class StudentsController {
 	}
 
 	@GetMapping(path = "/export-student")
-	public ResponseEntity<Resource> exportStudent(@RequestParam UUID classId) {
+	public ResponseEntity<Resource> exportStudent(@RequestParam Integer classId) {
 		ByteArrayInputStream stream = excelService.exportStudent(classId);
 		ByteArrayResource recourse = new ByteArrayResource(stream.readAllBytes());
 		return ResponseEntity

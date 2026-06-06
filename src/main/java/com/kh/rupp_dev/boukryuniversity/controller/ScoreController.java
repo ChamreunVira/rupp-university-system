@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/scores")
@@ -26,7 +25,7 @@ public class ScoreController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<SingleResponse<ScoreResponse>> update(
-            @PathVariable UUID id,
+            @PathVariable Integer id,
             @RequestBody @Valid ScoreRequest request
     ) {
         ScoreResponse response = scoreService.update(id, request);
@@ -34,7 +33,7 @@ public class ScoreController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SingleResponse<ScoreResponse>> findById(@PathVariable UUID id) {
+    public ResponseEntity<SingleResponse<ScoreResponse>> findById(@PathVariable Integer id) {
         ScoreResponse response = scoreService.getById(id);
         return ResponseEntity.ok(SingleResponse.success("Score retrieved successfully for ID: " + id, response));
     }

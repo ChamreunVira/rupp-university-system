@@ -4,7 +4,6 @@ import com.kh.rupp_dev.boukryuniversity.dto.request.DepartmentRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.DepartmentResponse;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface DepartmentService {
 
@@ -12,11 +11,11 @@ public interface DepartmentService {
 
     List<DepartmentResponse> getAll();
 
-    DepartmentResponse getById(UUID id);
+    DepartmentResponse getById(Integer id);
 
-    DepartmentResponse update(UUID id, DepartmentRequest request);
+    DepartmentResponse update(Integer id, DepartmentRequest request);
 
-    void delete(UUID id);
+    void delete(Integer id);
 
 }
 

@@ -1,7 +1,6 @@
 package com.kh.rupp_dev.boukryuniversity.repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import com.kh.rupp_dev.boukryuniversity.entity.Student;
 import org.springframework.data.domain.Page;
@@ -14,11 +13,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, UUID>, JpaSpecificationExecutor<Student> {
+public interface StudentRepository extends JpaRepository<Student, Integer>, JpaSpecificationExecutor<Student> {
 
-	Optional<Student> findByClazzId(UUID id);
+	Optional<Student> findByClazzId(Integer id);
 
-	List<Student> findAllByClazzId(UUID classId);
+	List<Student> findAllByClazzId(Integer classId);
 
 	Page<Student> findByStatus(Boolean status, Pageable pageable);
 
@@ -27,5 +26,5 @@ public interface StudentRepository extends JpaRepository<Student, UUID>, JpaSpec
 	int countByGender(String gender);
 
 	@Query(value = "SELECT nextval('student_code_seq')", nativeQuery = true)
-	Long getNextSequence();
+	Integer getNextSequence();
 }

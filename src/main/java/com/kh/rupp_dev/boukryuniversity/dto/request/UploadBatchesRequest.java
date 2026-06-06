@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Builder
 public class UploadBatchesRequest {
 
-    private UUID userId;
+    private Integer userId;
 
     private String fileName;
 

@@ -2,7 +2,6 @@ package com.kh.rupp_dev.boukryuniversity.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -67,7 +66,7 @@ public class AttendaceRecordServiceImpl implements AttendanceRecordService {
     }
 
     @Override
-    public AttendanceRecord markAllAttendace(UUID studentId, String qrToken) {
+    public AttendanceRecord markAllAttendace(Integer studentId, String qrToken) {
 
         AttendanceSession session = sessionRepository.findByQrToken(qrToken)
                 .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
@@ -92,12 +91,12 @@ public class AttendaceRecordServiceImpl implements AttendanceRecordService {
     }
 
     @Override
-    public List<AttendanceRecord> getStudentAttendanc(UUID studentId) {
+    public List<AttendanceRecord> getStudentAttendanc(Integer studentId) {
         return recordRepository.findByStudentId(studentId);
     }
 
    @Override
-    public List<AttendanceRecord> getSessionAttendance(UUID sessionId) {
+    public List<AttendanceRecord> getSessionAttendance(Integer sessionId) {
         return recordRepository.findBySessionId(sessionId);
     }
 

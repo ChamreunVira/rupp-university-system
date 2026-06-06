@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_semester")
@@ -18,9 +17,9 @@ import java.util.UUID;
 public class Semester {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "semester_id")
-    private UUID id;
+    private Integer id;
 
     @Column(name = "semester_name", nullable = false, unique = true)
     private String name;

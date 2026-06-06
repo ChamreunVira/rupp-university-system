@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/courses")
@@ -33,8 +32,8 @@ public class CourseController {
 	}
 
 	@GetMapping("/{semesterId}/{subjectId}")
-	public ResponseEntity<SingleResponse<CourseResponse>> getById(@PathVariable UUID semesterId,
-			@PathVariable UUID subjectId) {
+	public ResponseEntity<SingleResponse<CourseResponse>> getById(@PathVariable Integer semesterId,
+			@PathVariable Integer subjectId) {
 		CourseResponse courseResponse = courseService.getById(semesterId, subjectId);
 		return ResponseEntity.ok(SingleResponse.success("Successfully to retrieve course data.", courseResponse));
 	}
@@ -46,14 +45,14 @@ public class CourseController {
 	}
 
 	@PutMapping("/{semesterId}/{subjectId}")
-	public ResponseEntity<SingleResponse<CourseResponse>> update(@PathVariable UUID semesterId,
-			@PathVariable UUID subjectId, @RequestBody @Valid CourseRequest courseRequest) {
+	public ResponseEntity<SingleResponse<CourseResponse>> update(@PathVariable Integer semesterId,
+			@PathVariable Integer subjectId, @RequestBody @Valid CourseRequest courseRequest) {
 		return ResponseEntity.ok(SingleResponse.success("Successfully to update course data.",
 				courseService.update(semesterId, subjectId, courseRequest)));
 	}
 
 	@DeleteMapping("/{semesterId}/{subjectId}")
-	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable UUID semesterId, @PathVariable UUID subjectId) {
+	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable Integer semesterId, @PathVariable Integer subjectId) {
 		courseService.delete(semesterId, subjectId);
 		return ResponseEntity.ok(SingleResponse.success("Successfully to delete course data.", null));
 	}

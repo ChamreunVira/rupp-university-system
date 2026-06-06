@@ -2,14 +2,13 @@ package com.kh.rupp_dev.boukryuniversity.service;
 
 import com.kh.rupp_dev.boukryuniversity.entity.AttendanceSession;
 
-import java.util.UUID;
 
 public interface AttendaceSessionService {
 
-   AttendanceSession createSession(UUID classId);
+   AttendanceSession createSession(Integer classId);
 
-   AttendanceSession findById(Long sessionId);
+   AttendanceSession findById(Integer sessionId);
 
-   void closeSession(Long sessionId);
+   void closeSession(Integer sessionId);
 
 }

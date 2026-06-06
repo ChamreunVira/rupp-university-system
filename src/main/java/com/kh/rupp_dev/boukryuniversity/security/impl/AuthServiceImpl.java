@@ -212,10 +212,10 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public void delete(UUID uuid) {
+	public void delete(Integer uuid) {
 		User user = userRepository.findById(uuid)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + uuid));
-		log.info("Delete user with UUID: {}", uuid);
+		log.info("Delete user with Integer: {}", uuid);
 		userRepository.delete(user);
 	}
 
@@ -226,9 +226,9 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public User getUser(UUID uuid) {
+	public User getUser(Integer uuid) {
 		User user = userRepository.findById(uuid)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with UUID: " + uuid));
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with Integer: " + uuid));
 		if (!user.isVerified()) {
 			throw new RuntimeException("User isn't verified account.");
 		}
@@ -236,7 +236,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public void updateStatus(UUID uuid, String status) {
+	public void updateStatus(Integer uuid, String status) {
 		User user = this.findByOrThrow(uuid);
 		user.setStatus(Boolean.parseBoolean(status));
 		userRepository.save(user);
@@ -257,9 +257,9 @@ public class AuthServiceImpl implements AuthService {
 		return response;
 	}
 
-	private User findByOrThrow(UUID uuid) {
+	private User findByOrThrow(Integer uuid) {
 		return userRepository.findById(uuid)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with UUID: " + uuid));
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with Integer: " + uuid));
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.kh.rupp_dev.boukryuniversity.service;
 
-import java.util.UUID;
 
 import com.kh.rupp_dev.boukryuniversity.dto.request.ClassRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.ClassResponse;
@@ -14,13 +13,13 @@ public interface ClassService {
 
 	Page<ClassResponse> getAll(Pageable pageable);
 
-	ClassResponse getById(UUID id);
+	ClassResponse getById(Integer id);
 
-	ClassResponse update(UUID id, ClassRequest request);
+	ClassResponse update(Integer id, ClassRequest request);
 
-    void delete(UUID id);
+    void delete(Integer id);
 
 	@Deprecated
-	DepartmentResponse findByDepartmentId(UUID departmentId , UUID classId);
+	DepartmentResponse findByDepartmentId(Integer departmentId , Integer classId);
 
 }

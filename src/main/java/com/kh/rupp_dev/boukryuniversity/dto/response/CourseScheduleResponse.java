@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +12,7 @@ import java.util.UUID;
 @Builder
 public class CourseScheduleResponse {
 
-    private UUID id;
+    private Integer id;
 
     private String dayOfWeek;
 

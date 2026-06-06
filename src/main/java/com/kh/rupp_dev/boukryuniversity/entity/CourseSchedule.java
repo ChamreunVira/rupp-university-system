@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_course_schedule")
@@ -19,9 +18,9 @@ import java.util.UUID;
 public class CourseSchedule {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_schedule_id")
-    private UUID id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({

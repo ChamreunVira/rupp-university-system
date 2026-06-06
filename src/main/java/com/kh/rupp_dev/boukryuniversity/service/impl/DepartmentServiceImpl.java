@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -42,7 +41,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             String imageName = Util.uploadImage(request.getThumbnail() , UPLOAD_DIRECTORY);
             department.setThumbnail(imageName);
         }
-        Long departmentCode = departmentRepository.getNextDepartmentSequence();
+        Integer departmentCode = departmentRepository.getNextDepartmentSequence();
         String code = String.format("%s%04d" , CodePrefix.DEPARTMENT_CODE_PREFIX , departmentCode);
         department.setCode(code);
         Department saved = departmentRepository.save(department);
@@ -61,14 +60,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     @Transactional(readOnly = true)
-    public DepartmentResponse getById(UUID id) {
+    public DepartmentResponse getById(Integer id) {
         Department department = findByOrThrow(id);
         log.info("Department found with id {}", id);
         return departmentMapper.toResponse(department);
     }
 
     @Override
-    public DepartmentResponse update(UUID id, DepartmentRequest request) {
+    public DepartmentResponse update(Integer id, DepartmentRequest request) {
         try {
             Department department = findByOrThrow(id);
             validateDuplicate(id, request);
@@ -90,7 +89,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(Integer id) {
         Department department = findByOrThrow(id);
         departmentRepository.delete(department);
         log.info("Department deleted with id {}", id);
@@ -102,13 +101,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
-    private void validateDuplicate(UUID id, DepartmentRequest request) {
+    private void validateDuplicate(Integer id, DepartmentRequest request) {
         if (departmentRepository.existsByNameAndIdNot(request.getName(), id)) {
             throw new DuplicateResourceException("Department name already exists");
         }
     }
 
-    private Department findByOrThrow(UUID id) {
+    private Department findByOrThrow(Integer id) {
         return departmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + id));
     }

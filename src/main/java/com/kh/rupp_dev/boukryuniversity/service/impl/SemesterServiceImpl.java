@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +40,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public SemesterResponse update(UUID id, SemesterRequest request) {
+    public SemesterResponse update(Integer id, SemesterRequest request) {
         Semester semester = this.findByOrThrow(id);
         validateDuplicate(id, request);
         semesterMapper.updateFromRequest(request, semester);
@@ -54,7 +53,7 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(Integer id) {
         Semester semester = this.findByOrThrow(id);
         log.info("Deleting semester with id {}", id);
         semesterRepository.delete(semester);
@@ -71,7 +70,7 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     @Transactional(readOnly = true)
-    public SemesterResponse getById(UUID id) {
+    public SemesterResponse getById(Integer id) {
         Semester semester = this.findByOrThrow(id);
         log.info("Returning Semester with id {}", id);
         return semesterMapper.toResponse(semester);
@@ -83,7 +82,7 @@ public class SemesterServiceImpl implements SemesterService {
         }
     }
 
-    private void validateDuplicate(UUID id, SemesterRequest request) {
+    private void validateDuplicate(Integer id, SemesterRequest request) {
         if (semesterRepository.existsByNameAndIdNot(request.getName(), id)) {
             throw new DuplicateResourceException("Semester name already exists");
         }
@@ -95,7 +94,7 @@ public class SemesterServiceImpl implements SemesterService {
         }
     }
 
-    private Semester findByOrThrow(UUID id) {
+    private Semester findByOrThrow(Integer id) {
         return semesterRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Semester not found with ID: " + id));
     }

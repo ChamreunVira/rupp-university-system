@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -15,9 +14,9 @@ import java.util.UUID;
 @Builder
 public class UploadBatchesResponse {
 
-    private UUID id;
+    private Integer id;
 
-    private UUID userId;
+    private Integer userId;
 
     private String username;
 

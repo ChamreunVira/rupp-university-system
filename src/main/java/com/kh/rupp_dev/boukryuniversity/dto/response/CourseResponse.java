@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,14 +13,14 @@ import java.util.UUID;
 @Builder
 public class CourseResponse {
 
-    private UUID subjectId;
+    private Integer subjectId;
 
     private String subjectName;
 
-    private UUID semesterId;
+    private Integer semesterId;
     private String semesterName;
 
-    private UUID instructorId;
+    private Integer instructorId;
     private String instructorName;
 
     private String name;

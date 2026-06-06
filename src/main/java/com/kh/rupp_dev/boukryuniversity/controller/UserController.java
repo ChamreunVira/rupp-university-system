@@ -16,7 +16,6 @@ import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -52,9 +51,9 @@ public class UserController {
 		return ResponseEntity.ok(SingleResponse.success("Reset Password successful!", response));
 	}
 
-	@Operation(summary = "Delete user account with UUID.")
+	@Operation(summary = "Delete user account with Integer.")
 	@DeleteMapping("/{uuid}")
-	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable UUID uuid) {
+	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable Integer uuid) {
 		authService.delete(uuid);
 		return ResponseEntity.ok(SingleResponse.success("Delete account successfully.", null));
 	}
@@ -73,7 +72,7 @@ public class UserController {
 	}
 
 	@PutMapping("/update-status/{id}")
-	public ResponseEntity<SingleResponse<Void>> updateStatus(@PathVariable UUID id, @RequestParam String status) {
+	public ResponseEntity<SingleResponse<Void>> updateStatus(@PathVariable Integer id, @RequestParam String status) {
 		authService.updateStatus(id, status);
 		return ResponseEntity.ok(SingleResponse.success("Update status successfully.", null));
 	}

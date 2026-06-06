@@ -9,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_department")
@@ -20,9 +19,9 @@ import java.util.UUID;
 public class Department extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "department_id")
-    private UUID id;
+    private Integer id;
 
     @Column(name = "department_name", nullable = false, unique = true)
     private String name;

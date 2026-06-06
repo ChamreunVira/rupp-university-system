@@ -65,7 +65,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public StudentResponse getById(UUID uuid) {
+	public StudentResponse getById(Integer uuid) {
 		Student student =  this.findByOrThrow(uuid);
 		log.info("Student found with id {}", student.getId());
 		return studentMapper.toResponse(student);
@@ -79,7 +79,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public StudentResponse update(UUID uuid, StudentRequest request) {
+	public StudentResponse update(Integer uuid, StudentRequest request) {
 		Student student = this.findByOrThrow(uuid);
 		studentMapper.updateFromRequest(request, student);
 		applyRequest(student, request);
@@ -90,14 +90,14 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public void delete(UUID uuid) {
+	public void delete(Integer uuid) {
 		Student student = this.findByOrThrow(uuid);
 		log.info("Student delete with id {}", student.getId());
 		studentRepository.delete(student);
 	}
 
 	@Override
-	public ClassResponse getClassByStudentId(UUID uuid) {
+	public ClassResponse getClassByStudentId(Integer uuid) {
 		Student student = this.findByOrThrow(uuid);
 		if (student.getClazz() == null) {
 			throw new ResourceNotFoundException("Class not found for student with ID: " + uuid);
@@ -122,7 +122,7 @@ public class StudentServiceImpl implements StudentService {
 
 		Class clazz;
 		try {
-			UUID classId = UUID.fromString(request.getClassId());
+			Integer classId = Integer.parseInt(request.getClassId());
 			clazz = classRepository.findById(classId)
 					.orElseThrow(() -> new ResourceNotFoundException("Classes not found: " + request.getClassId()));
 		} catch (IllegalArgumentException e) {
@@ -156,7 +156,7 @@ public class StudentServiceImpl implements StudentService {
 		return toStatistics(total, male, female);
 	}
 
-	private Student findByOrThrow(UUID uuid) {
+	private Student findByOrThrow(Integer uuid) {
 		return studentRepository
 				.findById(uuid)
 				.orElseThrow(() -> new ResourceNotFoundException("Student not found with id : " + uuid));
@@ -220,7 +220,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	private String getStudentCode() {
-		Long codeNumber = studentRepository.getNextSequence();
+		Integer codeNumber = studentRepository.getNextSequence();
 		return CodePrefix.STUDENT_CODE_PREFIX + String.format("%04d", codeNumber);
 	}
 

@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/semesters")
@@ -27,7 +26,7 @@ public class SemesterController {
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<SingleResponse<SemesterResponse>> getById(@PathVariable UUID id) {
+	public ResponseEntity<SingleResponse<SemesterResponse>> getById(@PathVariable Integer id) {
 		SemesterResponse response = semesterService.getById(id);
 		return ResponseEntity.ok(SingleResponse.success("Successfully retrieved semester.", response));
 	}
@@ -40,14 +39,14 @@ public class SemesterController {
 	}
 
 	@PutMapping(path = "/{id}")
-	public ResponseEntity<SingleResponse<SemesterResponse>> update(@PathVariable UUID id,
+	public ResponseEntity<SingleResponse<SemesterResponse>> update(@PathVariable Integer id,
 			@Valid @RequestBody SemesterRequest request) {
 		SemesterResponse response = semesterService.update(id, request);
 		return ResponseEntity.ok(SingleResponse.success("Successfully updated semester.", response));
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable UUID id) {
+	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable Integer id) {
 		semesterService.delete(id);
 		return ResponseEntity.ok(SingleResponse.success("Successfully deleted semester.", null));
 	}

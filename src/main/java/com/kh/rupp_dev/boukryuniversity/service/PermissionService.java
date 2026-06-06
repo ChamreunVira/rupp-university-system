@@ -4,19 +4,18 @@ import com.kh.rupp_dev.boukryuniversity.dto.request.PermissionRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.PermissionResponse;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface PermissionService {
 
     PermissionResponse create(PermissionRequest request);
 
-    PermissionResponse update(UUID id , PermissionRequest request);
+    PermissionResponse update(Integer id , PermissionRequest request);
 
-    void delete(UUID id);
+    void delete(Integer id);
 
     List<PermissionResponse> getAll();
 
-    PermissionResponse getById(UUID id);
+    PermissionResponse getById(Integer id);
 
     List<PermissionResponse> findByModule(String module);
 }
