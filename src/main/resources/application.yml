@@ -74,3 +74,9 @@ springdoc:
 uploads:
   department: /home/chamreunvira/Desktop/SpringBoot/BouKryUniversitySystem/uploads/department
   subject: /home/chamreunvira/Desktop/SpringBoot/BouKryUniversitySystem/uploads/subject
+
+attendance:
+  jwt:
+    secret: your-very-long-secret-key-min-32-chars-here!!
+  session:
+    expiry-minutes: '10'

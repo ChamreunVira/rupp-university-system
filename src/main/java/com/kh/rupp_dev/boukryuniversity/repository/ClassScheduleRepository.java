@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface ClassScheduleRepository extends JpaRepository<ClassSchedule, Long> {
 
-    Optional<ClassSchedule> findByClassId(UUID classId);
+    Optional<ClassSchedule> findByCourseId(UUID courseId);
 
 }

@@ -1,23 +1,22 @@
 package com.kh.rupp_dev.boukryuniversity.dto.response;
 
+import java.time.DayOfWeek;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class CourseScheduleResponse {
+public class ScheduleResponse {
 
     private Long scheduleId;
+    private String courseName; 
+    private List<DayOfWeek> allowedDay;
+    private String message;
 
-    private String dayOfWeek;
-
-    private String startTime;
-
-    private String endTime;
-
-    private Integer room;
 }
