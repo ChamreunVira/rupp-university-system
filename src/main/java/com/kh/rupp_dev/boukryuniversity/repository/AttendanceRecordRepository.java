@@ -9,14 +9,12 @@ import com.kh.rupp_dev.boukryuniversity.entity.AttendanceRecord;
 import com.kh.rupp_dev.boukryuniversity.entity.AttendanceSession;
 import com.kh.rupp_dev.boukryuniversity.entity.Student;
 
-public interface AttendanceRecordRepository extends JpaRepository<AttendanceRecord, Long> {
+public interface AttendanceRecordRepository extends JpaRepository<AttendanceRecord, Integer> {
 
     boolean existsByStudentAndSession(Student student, AttendanceSession session);
 
-    List<AttendanceRecord> findBySessionId(Long sessionId);
+    List<AttendanceRecord> findBySessionId(Integer sessionId);
 
-    List<AttendanceRecord> findByStudentId(UUID studentId);
-
-    List<AttendanceRecord> findBySessionId(UUID sessionId);
+    List<AttendanceRecord> findByStudentId(Integer studentId);
 
 }
