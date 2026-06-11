@@ -52,4 +52,5 @@ public class SubjectController {
 		subjectService.delete(id);
 		return ResponseEntity.ok(SingleResponse.success("Successfully deleted subject.", null));
 	}
+
 }

@@ -17,4 +17,5 @@ public class CourseScheduleResponse {
     private String startTime;
     private String endTime;
     private Integer room;
+    
 }
