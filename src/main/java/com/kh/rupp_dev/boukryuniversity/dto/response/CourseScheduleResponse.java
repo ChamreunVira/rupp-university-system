@@ -1,5 +1,6 @@
 package com.kh.rupp_dev.boukryuniversity.dto.response;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,13 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CourseScheduleResponse {
 
-    private Long scheduleId;
-
+    private UUID scheduleId;
     private String dayOfWeek;
-
     private String startTime;
-
     private String endTime;
-
     private Integer room;
 }

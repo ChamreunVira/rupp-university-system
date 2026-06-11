@@ -208,7 +208,7 @@ public class CourseServiceImpl implements CourseService {
 
     private CourseScheduleResponse toScheduleResponse(CourseSchedule schedule) {
         return CourseScheduleResponse.builder()
-                .id(schedule.getId())
+                .scheduleId(schedule.getId())
                 .dayOfWeek(formatDayOfWeek(schedule.getDayOfWeek()))
                 .startTime(formatTime(schedule.getStartTime()))
                 .endTime(formatTime(schedule.getEndTime()))

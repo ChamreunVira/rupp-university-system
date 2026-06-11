@@ -2,7 +2,7 @@ package com.kh.rupp_dev.boukryuniversity.validation;
 
 public class DistanceValidation {
 
-    public double haversine(double latitude, double longtitude1, double latitube2, double longtitude2) {
+    public static double haversine(double latitude, double longtitude1, double latitube2, double longtitude2) {
 
         final int radiuse = 6371000;
         double distaneLatitude = Math.toRadians(latitube2 - latitude);

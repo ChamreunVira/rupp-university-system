@@ -1,34 +1,39 @@
 package  com.kh.rupp_dev.boukryuniversity.entity;
 
-import java.time.LocalDateTime;
-
 import com.kh.rupp_dev.boukryuniversity.constant.AttendanceStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Entity
-@Table(name="tbl_attendanc_records")
-@Getter @Setter
+@Table(name = "attendance_record",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "session_id"})
+)
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class AttendanceRecord {
-      
-      @Id
-      @GeneratedValue(strategy=GenerationType.IDENTITY)
-      private Long id;
 
-      @ManyToOne(fetch=FetchType.LAZY)
-      @JoinColumn(name="student_id")
-      private Student student;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-      @ManyToOne(fetch = FetchType.LAZY)
-      @JoinColumn(name = "session_id")
-      private AttendanceSession session;
+    @Column(name = "student_id", nullable = false)
+    private UUID studentId;
 
-      private LocalDateTime attendanceTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id", nullable = false)
+    private AttendanceSession session;
 
-      @Enumerated(EnumType.STRING)
-      private AttendanceStatus status;
+    @Column(nullable = false)
+    private LocalDateTime attendanceTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AttendanceStatus status;
 
 }
