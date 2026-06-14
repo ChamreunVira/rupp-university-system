@@ -8,7 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class StartSessionRequest {
-    
+
     private Long scheduleId;
+    private String courseName;
 
 }

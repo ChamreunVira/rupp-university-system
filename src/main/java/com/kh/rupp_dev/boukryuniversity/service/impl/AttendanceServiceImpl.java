@@ -24,6 +24,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
@@ -201,6 +203,35 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .build();
 
         return recordRepository.save(record);
+    }
+
+    @Override
+    public List<ScheduleResponse> getAll() {
+        return scheduleRepository.findAll()
+                .stream()
+                .map(mapper::toScheduleResponse)
+                .toList();
+    }
+
+    @Override
+    public Optional<ScheduleResponse> getScheduleById(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId)
+                .map(mapper::toScheduleResponse);
+    }
+
+    @Override
+    public void deleteSchedule(Long scheduleId) {
+        if (scheduleRepository.existsById(scheduleId)) {
+            scheduleRepository.deleteById(scheduleId);
+        }
+    }
+
+    @Override
+    public ScheduleResponse updateSchedule(Long scheduleId, CreateScheduleRequest request) {
+        ClassSchedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Schedule not found with id: " + scheduleId));
+        mapper.updateFromRequest(request, schedule);
+        return mapper.toScheduleResponse(scheduleRepository.save(schedule));
     }
 
     private String generateSessionQrToken(

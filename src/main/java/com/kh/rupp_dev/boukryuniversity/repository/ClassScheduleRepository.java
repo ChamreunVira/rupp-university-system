@@ -10,4 +10,5 @@ public interface ClassScheduleRepository extends JpaRepository<ClassSchedule, Lo
 
     Optional<ClassSchedule> findByCourseId(UUID courseId);
 
+    Long id(Long id);
 }

@@ -31,6 +31,44 @@ public class AttendaceMapper {
                 .scheduleId(schedule.getId())
                 .courseName(schedule.getCourseName())
                 .allowedDay(schedule.getAllowedDay())
+                .startTime(schedule.getStartTime())
+                .closeTime(schedule.getEndTime())
                 .build();
+    }
+
+    public void updateFromRequest(CreateScheduleRequest request, ClassSchedule schedule) {
+        if (request==null || schedule==null) return;
+
+        if (request.getCourseId() != null) {
+            schedule.setCourseId(request.getCourseId());
+        }
+
+        if (request.getCoursName() != null) {
+            schedule.setCourseName(request.getCoursName());
+        }
+
+        if (request.getAllowedDays() != null) {
+            schedule.setAllowedDay(request.getAllowedDays());
+        }
+
+        if (request.getStartTime() != null) {
+            schedule.setStartTime(request.getStartTime());
+        }
+
+        if (request.getEndTime() != null) {
+            schedule.setEndTime(request.getEndTime());
+        }
+
+        if (request.getLatitude() != null) {
+            schedule.setLatitude(request.getLatitude());
+        }
+
+        if (request.getLongitude() != null) {
+            schedule.setLongtitude(request.getLongitude());
+        }
+
+        if (request.getRadiusMeters() != null) {
+            schedule.setRadiusMeters(request.getRadiusMeters());
+        }
     }
 }
