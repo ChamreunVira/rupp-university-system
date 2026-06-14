@@ -49,8 +49,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public ScheduleResponse createSchedule(CreateScheduleRequest request) {
-        ClassSchedule schedule = mapper.toSchedule(request);
 
+        ClassSchedule schedule = mapper.toSchedule(request);
         ClassSchedule saved = scheduleRepository.save(schedule);
 
         String allowedDayName = saved
@@ -63,17 +63,12 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public AttendanceSessionResponse startSession(
-        StartSessionRequest request,
-        String instructorId
-    ) {
-        ClassSchedule schedule = scheduleRepository
-            .findById(request.getScheduleId())
+    public AttendanceSessionResponse startSession(StartSessionRequest request, String instructorId) {
+
+        ClassSchedule schedule = scheduleRepository.findById(request.getScheduleId())
             .orElseThrow(() ->
-                new IllegalArgumentException(
-                    "Schedule not found: " + request.getScheduleId()
-                )
-            );
+                new IllegalArgumentException("Schedule not found: " + request.getScheduleId())
+        );
 
         DayOfWeek today = LocalDateTime.now().getDayOfWeek();
         if (!schedule.getAllowedDay().contains(today)) {
@@ -86,10 +81,8 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
 
         LocalDateTime now = LocalDateTime.now();
-        if (
-            now.isBefore(schedule.getStartTime()) ||
-            now.isAfter(schedule.getEndTime())
-        ) {
+
+        if (now.isBefore(schedule.getStartTime()) || now.isAfter(schedule.getEndTime())) {
             throw new IllegalStateException(
                 "Cannot start session outside class hours. " +
                     "Class runs " +
@@ -99,20 +92,11 @@ public class AttendanceServiceImpl implements AttendanceService {
             );
         }
 
-        if (
-            sessionRepository.existsByScheduleIdAndStatus(
-                schedule.getId(),
-                SessionStatus.ACTIVE
-            )
-        ) {
-            throw new IllegalStateException(
-                "An active session already exists for this class. "
-            );
+        if (sessionRepository.existsByScheduleIdAndStatus(schedule.getId(), SessionStatus.ACTIVE)) {
+            throw new IllegalStateException("An active session already exists for this class. ");
         }
 
-        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(
-            sessionExpired
-        );
+        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(sessionExpired);
         String qrToken = generateSessionQrToken(schedule.getId(), expiresAt);
 
         AttendanceSession session = AttendanceSession.builder()
@@ -137,7 +121,8 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public void closeSession(Long sessionId, String instructorId) {
+    public AttendanceSessionResponse closeSession(Long sessionId, String instructorId) {
+
         AttendanceSession session = sessionRepository
             .findById(sessionId)
             .orElseThrow(() ->
@@ -152,6 +137,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         session.setStatus(SessionStatus.CLOSED);
         sessionRepository.save(session);
+        return null;
     }
 
     @Override

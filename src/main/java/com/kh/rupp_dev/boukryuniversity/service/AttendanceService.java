@@ -16,7 +16,7 @@ public interface AttendanceService {
 
     AttendanceSessionResponse startSession(StartSessionRequest request, String instructorId);
 
-    void closeSession(Long sessionId, String instructorId);
+    AttendanceSessionResponse closeSession(Long sessionId, String instructorId);
 
     AttendanceRecord checkIn(CheckInRequest request);
 

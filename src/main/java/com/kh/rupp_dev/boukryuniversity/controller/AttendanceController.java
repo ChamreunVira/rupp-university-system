@@ -7,7 +7,6 @@ import com.kh.rupp_dev.boukryuniversity.dto.response.ScheduleResponse;
 import com.kh.rupp_dev.boukryuniversity.service.AttendanceService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -25,39 +24,27 @@ public class AttendanceController {
     private final AttendanceService service;
 
     @PostMapping("/schedule")
-    public ResponseEntity<?> createSchedule(
-        @RequestBody CreateScheduleRequest request
-    ) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                service.createSchedule(request)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(
-                Map.of("error", e.getMessage())
-            );
-        }
+    public ResponseEntity<ScheduleResponse> createSchedule(@RequestBody CreateScheduleRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createSchedule(request));
     }
 
     @PostMapping("/session/start")
     public ResponseEntity<AttendanceSessionResponse> startSession(
         @RequestBody StartSessionRequest request,
         @AuthenticationPrincipal UserDetails userDetails
-    ) {
+    ){
         String instructor = userDetails.getUsername();
         return ResponseEntity.ok(service.startSession(request, instructor));
     }
 
-/*
-    @PatchMapping("/session/close")
+    @PatchMapping("/session/close/{scheduleId}")
     public ResponseEntity<AttendanceSessionResponse> closeSession(
-            @PathVariable Long id,
+            @PathVariable Long scheduleId,
             @AuthenticationPrincipal UserDetails userDetails
     ){
-        service.closeSession(id, userDetails.getUsername());
-        return ResponseEntity.ok().body(Map.of("message", "Session closed successfully."));
+        AttendanceSessionResponse response = service.closeSession(scheduleId, userDetails.getUsername());
+        return ResponseEntity.ok(response);
     }
-*/
 
     @GetMapping("/{scheduleId}")
     public ResponseEntity<Optional<ScheduleResponse>> getById(@PathVariable Long scheduleId) {
@@ -73,4 +60,5 @@ public class AttendanceController {
     public ResponseEntity<ScheduleResponse> update(@PathVariable Long scheduleId, @RequestBody CreateScheduleRequest request) {
         return ResponseEntity.ok(service.updateSchedule(scheduleId, request));
     }
+
 }
