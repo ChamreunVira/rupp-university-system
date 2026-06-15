@@ -142,6 +142,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public AttendanceRecord checkIn(CheckInRequest request) {
+
         AttendanceSession session = sessionRepository.findByQrToken(request.getQrToken())
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid Qr Token."));
 

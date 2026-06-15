@@ -11,10 +11,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class CheckInResponse {
+
     private Long recordId;
     private UUID studentId;
     private UUID sessionId;
     private String status;
     private LocalDateTime attendanceTime;
     private String message;
+
 }

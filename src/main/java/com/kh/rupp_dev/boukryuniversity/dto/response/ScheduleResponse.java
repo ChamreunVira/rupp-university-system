@@ -12,9 +12,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ScheduleResponse {
+
     private Long scheduleId;
     private String courseName;
     private List<DayOfWeek> allowedDay;
     private LocalDateTime startTime;
     private LocalDateTime closeTime;
+
 }

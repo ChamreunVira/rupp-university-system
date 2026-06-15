@@ -1,14 +1,14 @@
 package com.kh.rupp_dev.boukryuniversity.controller;
 
+import com.kh.rupp_dev.boukryuniversity.dto.request.CheckInRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.request.CreateScheduleRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.request.StartSessionRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.AttendanceSessionResponse;
 import com.kh.rupp_dev.boukryuniversity.dto.response.ScheduleResponse;
+import com.kh.rupp_dev.boukryuniversity.entity.AttendanceRecord;
 import com.kh.rupp_dev.boukryuniversity.service.AttendanceService;
-
 import java.util.List;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +46,12 @@ public class AttendanceController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{scheduleId}")
+    @PostMapping("/check-in")
+    public ResponseEntity<AttendanceRecord> checkIn(@RequestBody CheckInRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.checkIn(request));
+    }
+
+    @GetMapping("/schedule/{scheduleId}")
     public ResponseEntity<Optional<ScheduleResponse>> getById(@PathVariable Long scheduleId) {
         return ResponseEntity.ok(service.getScheduleById(scheduleId));
     }
@@ -56,9 +61,11 @@ public class AttendanceController {
         return ResponseEntity.ok(service.getAll());
     }
 
-    @PutMapping("/{scheduleId}")
+    @PutMapping("/schedule/{scheduleId}")
     public ResponseEntity<ScheduleResponse> update(@PathVariable Long scheduleId, @RequestBody CreateScheduleRequest request) {
         return ResponseEntity.ok(service.updateSchedule(scheduleId, request));
     }
+
+
 
 }
