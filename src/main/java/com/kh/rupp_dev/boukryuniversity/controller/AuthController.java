@@ -1,13 +1,14 @@
 package com.kh.rupp_dev.boukryuniversity.controller;
 
-import com.kh.rupp_dev.boukryuniversity.dto.request.RefreshTokenRequest;
-import com.kh.rupp_dev.boukryuniversity.payload.ErrorResponse;
+import com.kh.rupp_dev.boukryuniversity.dto.response.RefreshTokenResponse;
 import com.kh.rupp_dev.boukryuniversity.payload.SingleResponse;
 import com.kh.rupp_dev.boukryuniversity.dto.request.AuthRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.request.UserRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.UserResponse;
 import com.kh.rupp_dev.boukryuniversity.jwt.JwtService;
 import com.kh.rupp_dev.boukryuniversity.service.RefreshTokenService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.*;
 import org.springframework.security.core.AuthenticationException;
@@ -77,19 +78,19 @@ public class AuthController {
 	}
 
 	@Operation(summary = "Retrieve new access token.")
-	@GetMapping("/refresh-token")
-	public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
-		return refreshTokenService.findByToken(request.getToken())
-				.map(refresh -> {
-					if (refreshTokenService.verify(refresh)) {
-						String token = jwtService.generateToken(refresh.getUser().getEmail());
-						return ResponseEntity.ok(SingleResponse.success("Refresh successful!", Map.of("token", token)));
-					}
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-							.body(ErrorResponse.error("Invalid refresh token."));
-				})
-				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-						ErrorResponse.error("User un authentication.")));
+	@GetMapping("/refresh")
+	public ResponseEntity<SingleResponse<RefreshTokenResponse>> refreshToken(HttpServletRequest request) {
+		String token = null;
+		for(Cookie cookie : request.getCookies()) {
+			if(cookie.getName().equals("token")) {
+				token = cookie.getValue();
+				break;
+			}
+		}
+
+		var response = refreshTokenService.verify(token);
+
+		return ResponseEntity.ok().body(SingleResponse.success("Successfully to renew access token." , response));
 	}
 
 }

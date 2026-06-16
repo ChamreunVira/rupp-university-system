@@ -1,12 +1,15 @@
 package com.kh.rupp_dev.boukryuniversity.service.impl;
 
+import com.kh.rupp_dev.boukryuniversity.dto.response.RefreshTokenResponse;
 import com.kh.rupp_dev.boukryuniversity.entity.RefreshToken;
+import com.kh.rupp_dev.boukryuniversity.jwt.JwtService;
 import com.kh.rupp_dev.boukryuniversity.repository.RefreshTokenRepository;
 import com.kh.rupp_dev.boukryuniversity.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -18,6 +21,7 @@ import java.util.UUID;
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtService jwtService;
 
     @Value("${jwt.expiration-refresh}")
     private Long expiration;
@@ -38,12 +42,19 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public boolean verify(RefreshToken refreshToken) {
+    public RefreshTokenResponse verify(String token) {
+        RefreshToken refreshToken = this.findByToken(token)
+                .orElseThrow(() -> new ResourceAccessException("Refresh token not found."));
+
         if(refreshToken.getExpiryAt().isBefore(Instant.now())) {
-            log.info("Refresh token is expiration.");
-            refreshTokenRepository.delete(refreshToken);
-            return false;
+            String accessToken = jwtService.generateToken(refreshToken.getUser().getEmail());
+            return RefreshTokenResponse
+                    .builder()
+                    .accessToken(accessToken)
+                    .build();
+
         }
-        return true;
+
+        throw new IllegalArgumentException("Refresh token expired.");
     }
 }
