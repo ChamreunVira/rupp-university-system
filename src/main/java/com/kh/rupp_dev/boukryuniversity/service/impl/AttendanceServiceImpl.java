@@ -138,6 +138,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         session.setStatus(SessionStatus.CLOSED);
         sessionRepository.save(session);
         return null;
+
     }
 
     @Override
