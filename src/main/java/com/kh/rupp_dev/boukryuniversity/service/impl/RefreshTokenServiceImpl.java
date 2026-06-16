@@ -46,7 +46,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         RefreshToken refreshToken = this.findByToken(token)
                 .orElseThrow(() -> new ResourceAccessException("Refresh token not found."));
 
-        if(refreshToken.getExpiryAt().isBefore(Instant.now())) {
+        if(!refreshToken.getExpiryAt().isBefore(Instant.now())) {
             String accessToken = jwtService.generateToken(refreshToken.getUser().getEmail());
             return RefreshTokenResponse
                     .builder()

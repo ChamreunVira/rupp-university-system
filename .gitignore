@@ -26,6 +26,7 @@ target/
 /BoukryUniversity/
 /nbdist/
 /.nb-gradle/
+/uploads
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
