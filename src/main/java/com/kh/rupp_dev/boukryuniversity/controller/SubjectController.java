@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/subjects")
@@ -35,20 +34,20 @@ public class SubjectController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<SingleResponse<SubjectResponse>> getById(@PathVariable UUID id) {
+	public ResponseEntity<SingleResponse<SubjectResponse>> getById(@PathVariable Long id) {
 		SubjectResponse response = subjectService.getById(id);
 		return ResponseEntity.ok(SingleResponse.success("Successfully retrieved subject.", response));
 	}
 
 	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SingleResponse<SubjectResponse>> update(@Valid @ModelAttribute SubjectRequest request,
-			@PathVariable UUID id) {
+			@PathVariable Long id) {
 		SubjectResponse response = subjectService.update(id, request);
 		return ResponseEntity.ok(SingleResponse.success("Successfully updated subject.", response));
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable UUID id) {
+	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable Long id) {
 		subjectService.delete(id);
 		return ResponseEntity.ok(SingleResponse.success("Successfully deleted subject.", null));
 	}

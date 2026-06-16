@@ -18,6 +18,8 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -120,11 +122,11 @@ public class AttendanceServiceImpl implements AttendanceService {
         var key = Keys.hmacShaKeyFor(keyByte);
 
         return Jwts.builder()
-                .setSubject("session")
+                .subject("session")
                 .claim("scheduleId", schdeduleId)
-                .setIssuedAt(new Date())
-                .setExpiration(java.sql.Timestamp.valueOf(expiresAt))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .issuedAt(new Date())
+                .expiration(Timestamp.valueOf(expiresAt))
+                .signWith(key)
                 .compact();
     }
 

@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Map;
-import java.util.UUID;
 
 public interface AuthService {
 
@@ -57,10 +56,10 @@ public interface AuthService {
 	UserResponse resetPassword(String token, ResetPasswordRequest request);
 
 	/**
-	 * Delete user account with UUID
+	 * Delete user account with Long
 	 * @param uuid
 	 */
-	void delete(UUID uuid);
+	void delete(Long id);
 
 	/**
 	 * Retrieve all user has been verified account with pagination
@@ -71,9 +70,9 @@ public interface AuthService {
 	 * This method use for set foreign into weak entity set
 	 * return Users Object but be care full make sure user is verfied
 	 */
-	User getUser(UUID uuid);
+	User getUser(Long id);
 
-	void updateStatus(UUID uuid , String status);
+	void updateStatus(Long id , String status);
 
 	/**
 	 * This method use to find user has been authentication. For retrieve foreign key

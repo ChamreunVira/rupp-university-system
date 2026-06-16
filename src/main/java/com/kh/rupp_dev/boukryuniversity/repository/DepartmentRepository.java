@@ -5,14 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
 
 @Repository
-public interface DepartmentRepository extends JpaRepository<Department, UUID> {
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
     boolean existsByName(String name);
 
-    boolean existsByNameAndIdNot(String name, UUID id);
+    boolean existsByNameAndIdNot(String name, Long id);
 
     @Query(value = "SELECT nextval('department_code_seq')" , nativeQuery = true)
     Long getNextDepartmentSequence();

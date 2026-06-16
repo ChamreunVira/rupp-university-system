@@ -3,25 +3,50 @@ package com.kh.rupp_dev.boukryuniversity.mapper;
 import com.kh.rupp_dev.boukryuniversity.dto.request.PermissionRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.PermissionResponse;
 import com.kh.rupp_dev.boukryuniversity.entity.Permission;
-import org.mapstruct.*;
+import org.springframework.stereotype.Component;
 
+@Component
+public class PermissionMapper {
 
-@Mapper(componentModel = "spring")
-public interface PermissionMapper {
+    public Permission toEntity(PermissionRequest request) {
+        if (request == null) {
+            return null;
+        }
 
-    @Mapping(target = "id" , ignore = true)
-    @Mapping(target = "createdAt" , ignore = true)
-    @Mapping(target = "roles" , ignore = true)
-    @Mapping(target = "status" , ignore = true)
-    Permission toEntity(PermissionRequest request);
+        Permission permission = new Permission();
+        permission.setName(request.getName());
+        permission.setDescription(request.getDescription());
+        permission.setModule(request.getModule());
+        return permission;
+    }
 
-    @Mapping(target = "roleIds" , ignore = true)
-    PermissionResponse toResponse(Permission permission);
+    public PermissionResponse toResponse(Permission permission) {
+        if (permission == null) {
+            return null;
+        }
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id" , ignore = true)
-    @Mapping(target = "createdAt" , ignore = true)
-    @Mapping(target = "roles" , ignore = true)
-    @Mapping(target = "status" , ignore = true)
-    void updateFromRequest(@MappingTarget Permission permission, PermissionRequest request);
+        return PermissionResponse.builder()
+                .id(permission.getId())
+                .name(permission.getName())
+                .description(permission.getDescription())
+                .module(permission.getModule())
+                .status(permission.isStatus())
+                .build();
+    }
+
+    public void updateFromRequest(Permission permission, PermissionRequest request) {
+        if (request == null) {
+            return;
+        }
+
+        if (request.getName() != null) {
+            permission.setName(request.getName());
+        }
+        if (request.getDescription() != null) {
+            permission.setDescription(request.getDescription());
+        }
+        if (request.getModule() != null) {
+            permission.setModule(request.getModule());
+        }
+    }
 }

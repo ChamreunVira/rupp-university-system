@@ -2,7 +2,6 @@ package com.kh.rupp_dev.boukryuniversity.entity;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import com.kh.rupp_dev.boukryuniversity.audit.AuditListener;
 import jakarta.persistence.*;
@@ -16,9 +15,9 @@ import lombok.*;
 public class Student extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "student_id")
-	private UUID id;
+	private Long id;
 
 	@Column(name = "student_code", updatable = false, nullable = false)
 	private String studentCode;

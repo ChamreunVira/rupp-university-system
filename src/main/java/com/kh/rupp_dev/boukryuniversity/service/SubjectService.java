@@ -4,7 +4,6 @@ import com.kh.rupp_dev.boukryuniversity.dto.request.SubjectRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.SubjectResponse;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface SubjectService {
 
@@ -12,9 +11,9 @@ public interface SubjectService {
 
     List<SubjectResponse> getAll();
 
-    SubjectResponse getById(UUID id);
+    SubjectResponse getById(Long id);
 
-    SubjectResponse update(UUID id, SubjectRequest request);
+    SubjectResponse update(Long id, SubjectRequest request);
 
-    void delete(UUID id);
+    void delete(Long id);
 }

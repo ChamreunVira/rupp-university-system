@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -28,5 +27,5 @@ public class PermissionRequest {
     @Size(min = 2 , max = 25 , message = "Module must be between t and 25 characters.")
     private String module;
 
-    private Set<UUID> roleIds;
+    private Set<Long> roleIds;
 }

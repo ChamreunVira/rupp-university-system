@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Builder
 public class AuditResponse {
 
-    private UUID id;
+    private Long id;
 
     private String username;
 

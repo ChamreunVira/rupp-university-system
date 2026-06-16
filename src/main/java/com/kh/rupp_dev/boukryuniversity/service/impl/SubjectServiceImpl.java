@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -62,14 +61,14 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional(readOnly = true)
-    public SubjectResponse getById(UUID id) {
+    public SubjectResponse getById(Long id) {
         Subject subject = findByOrThrow(id);
         log.info("Subject found with id {}", id);
         return subjectMapper.toResponse(subject);
     }
 
     @Override
-    public SubjectResponse update(UUID id, SubjectRequest request) {
+    public SubjectResponse update(Long id, SubjectRequest request) {
         try {
             Subject subject = findByOrThrow(id);
             if (subject.getThumbnail() != null) {
@@ -92,26 +91,19 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(Long id) {
         Subject subject = findByOrThrow(id);
         subjectRepository.delete(subject);
         log.info("Subject deleted with id {}", id);
     }
 
-    private Subject findByOrThrow(UUID id) {
+    private Subject findByOrThrow(Long id) {
         return subjectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subject not found with ID: " + id));
     }
 
-    private Department findDepartmentById(String departmentId) {
-        UUID id;
-        try {
-            id = UUID.fromString(departmentId);
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Department id must be a valid UUID string");
-        }
-
-        return departmentRepository.findById(id)
+    private Department findDepartmentById(Long departmentId) {
+        return departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + departmentId));
     }
 }

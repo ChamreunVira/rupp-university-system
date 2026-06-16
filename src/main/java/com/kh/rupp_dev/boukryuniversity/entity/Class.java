@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_class")
@@ -17,9 +16,9 @@ import java.util.UUID;
 public class Class extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "class_id")
-    private UUID id;
+    private Long id;
 
     @Column(name = "class_name", nullable = false)
     private String name;

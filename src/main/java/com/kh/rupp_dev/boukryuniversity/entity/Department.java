@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_department")
@@ -18,9 +17,9 @@ import java.util.UUID;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "department_id")
-    private UUID id;
+    private Long id;
 
     @Column(name = "department_name", nullable = false, unique = true)
     private String name;

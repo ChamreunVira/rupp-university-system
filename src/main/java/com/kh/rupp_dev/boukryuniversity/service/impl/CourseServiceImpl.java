@@ -31,7 +31,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseResponse update(UUID semesterId, UUID subjectId, CourseRequest request) {
+    public CourseResponse update(Long semesterId, Long subjectId, CourseRequest request) {
         Course course = this.findByOrThrow(new CourseId(semesterId, subjectId));
         validateIdentityMatch(semesterId, subjectId, request);
 
@@ -82,7 +81,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void delete(UUID semesterId, UUID subjectId) {
+    public void delete(Long semesterId, Long subjectId) {
         Course course = this.findByOrThrow(new CourseId(semesterId, subjectId));
         log.info("Deleting course with semesterId {} and subjectId {}", semesterId, subjectId);
         courseRepository.delete(course);
@@ -95,7 +94,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseResponse getById(UUID semesterId, UUID subjectId) {
+    public CourseResponse getById(Long semesterId, Long subjectId) {
         Course course = this.findByOrThrow(new CourseId(semesterId, subjectId));
         log.info("Retrieving course with semesterId {} and subjectId {}", semesterId, subjectId);
         return toResponse(course);
@@ -119,29 +118,29 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private CourseResponse toResponse(Course course) {
-        UUID semesterId = course.getCourseId().getSemesterId();
-        UUID subjectId = course.getCourseId().getSubjectId();
+        Long semesterId = course.getCourseId().getSemesterId();
+        Long subjectId = course.getCourseId().getSubjectId();
         Semester semester = findSemesterById(semesterId);
         Subject subject = findSubjectById(subjectId);
         return toResponse(course, semester.getName(), subject.getName());
     }
 
-    private Semester findSemesterById(UUID semesterId) {
+    private Semester findSemesterById(Long semesterId) {
         return semesterRepository.findById(semesterId)
                 .orElseThrow(() -> new ResourceNotFoundException("Semester not found with ID: " + semesterId));
     }
 
-    private Subject findSubjectById(UUID subjectId) {
+    private Subject findSubjectById(Long subjectId) {
         return subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Subject not found with ID: " + subjectId));
     }
 
-    private User findInstructorById(UUID instructorId) {
+    private User findInstructorById(Long instructorId) {
         return userRepository.findById(instructorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Instructor not found with ID: " + instructorId));
     }
 
-    private void validateIdentityMatch(UUID semesterId, UUID subjectId, CourseRequest request) {
+    private void validateIdentityMatch(Long semesterId, Long subjectId, CourseRequest request) {
         if (!semesterId.equals(request.getSemesterId()) || !subjectId.equals(request.getSubjectId())) {
             throw new IllegalArgumentException("Course semesterId and subjectId in the request must match the URL.");
         }
@@ -208,7 +207,7 @@ public class CourseServiceImpl implements CourseService {
 
     private CourseScheduleResponse toScheduleResponse(CourseSchedule schedule) {
         return CourseScheduleResponse.builder()
-                .id(schedule.getId())
+                .scheduleId(schedule.getId())
                 .dayOfWeek(formatDayOfWeek(schedule.getDayOfWeek()))
                 .startTime(formatTime(schedule.getStartTime()))
                 .endTime(formatTime(schedule.getEndTime()))

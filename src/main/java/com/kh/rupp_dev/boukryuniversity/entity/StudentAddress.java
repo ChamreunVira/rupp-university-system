@@ -4,7 +4,6 @@ import com.kh.rupp_dev.boukryuniversity.audit.AuditListener;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_student_address")
@@ -15,9 +14,9 @@ import java.util.UUID;
 public class StudentAddress {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id")
-    private UUID id;
+    private Long id;
 
     @Column(name = "No")
     private String houseNumber;

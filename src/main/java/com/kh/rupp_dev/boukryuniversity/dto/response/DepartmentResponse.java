@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +12,7 @@ import java.util.UUID;
 @Builder
 public class DepartmentResponse {
 
-    private UUID id;
+    private Long id;
 
     private String name;
 

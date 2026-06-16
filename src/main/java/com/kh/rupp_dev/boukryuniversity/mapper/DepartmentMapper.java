@@ -3,28 +3,46 @@ package com.kh.rupp_dev.boukryuniversity.mapper;
 import com.kh.rupp_dev.boukryuniversity.dto.request.DepartmentRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.DepartmentResponse;
 import com.kh.rupp_dev.boukryuniversity.entity.Department;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface DepartmentMapper {
+@Component
+public class DepartmentMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "code", ignore = true)
-    @Mapping(target = "thumbnail", ignore = true)
-    @Mapping(target = "subjects" , ignore = true)
-    Department toEntity(DepartmentRequest request);
+    public Department toEntity(DepartmentRequest request) {
+        if (request == null) {
+            return null;
+        }
 
-    @Mapping(target = "thumbnail", source = "thumbnail")
-    DepartmentResponse toResponse(Department department);
+        Department department = new Department();
+        department.setName(request.getName());
+        department.setDescription(request.getDescription());
+        return department;
+    }
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "code", ignore = true)
-    @Mapping(target = "thumbnail", ignore = true)
-    @Mapping(target = "subjects" , ignore = true)
-    void updateFromRequest(DepartmentRequest request, @MappingTarget Department department);
+    public DepartmentResponse toResponse(Department department) {
+        if (department == null) {
+            return null;
+        }
+
+        return DepartmentResponse.builder()
+                .id(department.getId())
+                .name(department.getName())
+                .code(department.getCode())
+                .thumbnail(department.getThumbnail())
+                .description(department.getDescription())
+                .build();
+    }
+
+    public void updateFromRequest(DepartmentRequest request, Department department) {
+        if (request == null) {
+            return;
+        }
+
+        if (request.getName() != null) {
+            department.setName(request.getName());
+        }
+        if (request.getDescription() != null) {
+            department.setDescription(request.getDescription());
+        }
+    }
 }

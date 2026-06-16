@@ -65,8 +65,8 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public StudentResponse getById(UUID uuid) {
-		Student student =  this.findByOrThrow(uuid);
+	public StudentResponse getById(Long id) {
+		Student student =  this.findByOrThrow(id);
 		log.info("Student found with id {}", student.getId());
 		return studentMapper.toResponse(student);
 	}
@@ -79,28 +79,28 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public StudentResponse update(UUID uuid, StudentRequest request) {
-		Student student = this.findByOrThrow(uuid);
+	public StudentResponse update(Long id, StudentRequest request) {
+		Student student = this.findByOrThrow(id);
 		studentMapper.updateFromRequest(request, student);
 		applyRequest(student, request);
 
 		Student updated = studentRepository.save(student);
-		log.info("Student Update with ID: {}", uuid);
+		log.info("Student Update with ID: {}", id);
         return studentMapper.toResponse(updated);
 	}
 
 	@Override
-	public void delete(UUID uuid) {
-		Student student = this.findByOrThrow(uuid);
+	public void delete(Long id) {
+		Student student = this.findByOrThrow(id);
 		log.info("Student delete with id {}", student.getId());
 		studentRepository.delete(student);
 	}
 
 	@Override
-	public ClassResponse getClassByStudentId(UUID uuid) {
-		Student student = this.findByOrThrow(uuid);
+	public ClassResponse getClassByStudentId(Long id) {
+		Student student = this.findByOrThrow(id);
 		if (student.getClazz() == null) {
-			throw new ResourceNotFoundException("Class not found for student with ID: " + uuid);
+			throw new ResourceNotFoundException("Class not found for student with ID: " + id);
 		}
 		return classMapper.toResponse(student.getClazz());
 	}
@@ -122,7 +122,7 @@ public class StudentServiceImpl implements StudentService {
 
 		Class clazz;
 		try {
-			UUID classId = UUID.fromString(request.getClassId());
+			Long classId = Long.parseLong(request.getClassId());
 			clazz = classRepository.findById(classId)
 					.orElseThrow(() -> new ResourceNotFoundException("Classes not found: " + request.getClassId()));
 		} catch (IllegalArgumentException e) {
@@ -156,10 +156,10 @@ public class StudentServiceImpl implements StudentService {
 		return toStatistics(total, male, female);
 	}
 
-	private Student findByOrThrow(UUID uuid) {
+	private Student findByOrThrow(Long id) {
 		return studentRepository
-				.findById(uuid)
-				.orElseThrow(() -> new ResourceNotFoundException("Student not found with id : " + uuid));
+				.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Student not found with id : " + id));
 	}
 
 	private void applyRequest(Student student, StudentRequest request) {

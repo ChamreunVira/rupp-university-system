@@ -3,27 +3,37 @@ package com.kh.rupp_dev.boukryuniversity.mapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.rupp_dev.boukryuniversity.dto.response.AuditLogResponse;
 import com.kh.rupp_dev.boukryuniversity.entity.AuditLog;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Mapper(componentModel = "spring")
-public interface AuditLogMapper {
+@Component
+public class AuditLogMapper {
 
-    @Mapping(target = "recordId", expression = "java(auditLog.getRecordId() != null ? auditLog.getRecordId().toString() : null)")
-    @Mapping(target = "oldData", expression = "java(jsonToMap(auditLog.getOldData()))")
-    @Mapping(target = "newData", expression = "java(jsonToMap(auditLog.getNewData()))")
-    AuditLogResponse toResponse(AuditLog auditLog);
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    // Convert JSON string → Map
-    default Map<String, Object> jsonToMap(String json) {
+    public AuditLogResponse toResponse(AuditLog auditLog) {
+        if (auditLog == null) {
+            return null;
+        }
+
+        return AuditLogResponse.builder()
+                .id(auditLog.getId())
+                .action(auditLog.getAction())
+                .changeAt(auditLog.getChangeAt())
+                .tableName(auditLog.getTableName())
+                .recordId(auditLog.getRecordId() != null ? auditLog.getRecordId().toString() : null)
+                .oldData(jsonToMap(auditLog.getOldData()))
+                .newData(jsonToMap(auditLog.getNewData()))
+                .build();
+    }
+
+    private Map<String, Object> jsonToMap(String json) {
         try {
-            if (json == null) return null;
-            return 
-                new ObjectMapper()
-                    .readValue(json, Map.class);
-                    
+            if (json == null) {
+                return null;
+            }
+            return objectMapper.readValue(json, Map.class);
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse JSON", e);
         }

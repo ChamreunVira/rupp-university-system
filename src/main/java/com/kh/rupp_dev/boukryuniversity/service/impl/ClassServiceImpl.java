@@ -19,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -49,7 +48,7 @@ public class ClassServiceImpl implements ClassService {
 
 	@Override
 	@Transactional
-	public ClassResponse update(UUID id, ClassRequest request) {
+	public ClassResponse update(Long id, ClassRequest request) {
 		Class clazz = findByOrThrow(id);
 		validateDuplicate(id, request);
 		classMapper.updateFromRequest(request, clazz);
@@ -61,14 +60,14 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public void delete(UUID id) {
+	public void delete(Long id) {
 		Class clazz = findByOrThrow(id);
 		log.info("Delete class successfully with ID: " + id);
 		classRepository.delete(clazz);
 	}
 
 	@Override
-	public DepartmentResponse findByDepartmentId(UUID departmentId, UUID classId) {
+	public DepartmentResponse findByDepartmentId(Long departmentId, Long classId) {
 		Class clazz = findByOrThrow(classId);
 		Department department = classRepository.findByDepartment(clazz.getDepartment())
 				.orElseThrow(() -> new ResourceNotFoundException("Department ot found with ID: " + clazz.getDepartment().getId()));
@@ -76,27 +75,20 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public ClassResponse getById(UUID id) {
+	public ClassResponse getById(Long id) {
 		Class clazz = findByOrThrow(id);
 		log.info("Class with id {} retrieved successfully", id);
 		return classMapper.toResponse(clazz);
 	}
 
 	@Transactional(readOnly = true)
-	protected Class findByOrThrow(UUID id) {
+	protected Class findByOrThrow(Long id) {
 		return classRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Class not found with id: " + id));
 	}
 
-	private Department findDepartmentById(String departmentId) {
-		UUID id;
-		try {
-			id = UUID.fromString(departmentId);
-		} catch (IllegalArgumentException ex) {
-			throw new IllegalArgumentException("Department id must be a valid UUID string");
-		}
-
-		return departmentRepository.findById(id)
+	private Department findDepartmentById(Long departmentId) {
+		return departmentRepository.findById(departmentId)
 				.orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + departmentId));
 	}
 
@@ -107,7 +99,7 @@ public class ClassServiceImpl implements ClassService {
 		}
 	}
 
-	private void validateDuplicate(UUID id, ClassRequest request) {
+	private void validateDuplicate(Long id, ClassRequest request) {
 		if (classRepository.existsByNameAndAcademicYearAndGenerationAndIdNot(
 				request.getName(), request.getAcademicYear(), request.getGeneration(), id)) {
 			throw new DuplicateResourceException("Class already exists");

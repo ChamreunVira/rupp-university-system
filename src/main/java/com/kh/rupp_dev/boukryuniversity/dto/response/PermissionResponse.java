@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Builder
 public class PermissionResponse {
 
-    private UUID id;
+    private Long id;
 
     private String name;
 
@@ -24,6 +23,6 @@ public class PermissionResponse {
 
     private boolean status;
 
-    private List<UUID> roleIds;
+    private List<Long> roleIds;
 
 }

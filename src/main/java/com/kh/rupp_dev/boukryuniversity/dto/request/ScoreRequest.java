@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -17,13 +16,13 @@ import java.util.UUID;
 public class ScoreRequest {
 
     @NotNull(message = "Semester ID is required")
-    private UUID semesterId;
+    private Long semesterId;
 
     @NotNull(message = "Subject ID is required")
-    private UUID subjectId;
+    private Long subjectId;
 
     @NotNull(message = "Student ID is required")
-    private UUID studentId;
+    private Long studentId;
 
     @Min(value = 0, message = "Score must be at least 0")
     @Max(value = 100, message = "Score must not exceed 100")

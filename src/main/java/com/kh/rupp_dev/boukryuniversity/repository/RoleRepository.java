@@ -3,7 +3,6 @@ package com.kh.rupp_dev.boukryuniversity.repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.rupp_dev.boukryuniversity.entity.Role;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, UUID> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
 	Optional<Role> findByName(String name);
 
@@ -21,7 +20,7 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
 
 	Optional<Role> findByNameAndStatus(String name, String name1);
 
-	boolean existsByNameAndIdNot(String roleName, UUID uuid);
+	boolean existsByNameAndIdNot(String roleName, Long id);
 
-	Set<Role> findByIdIn(Set<UUID> uuids);
+	Set<Role> findByIdIn(Set<Long> uuids);
 }

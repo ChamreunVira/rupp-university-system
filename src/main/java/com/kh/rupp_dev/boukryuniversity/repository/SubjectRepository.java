@@ -5,14 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
 
 @Repository
-public interface SubjectRepository extends JpaRepository<Subject, UUID> {
+public interface SubjectRepository extends JpaRepository<Subject, Long> {
 
     boolean existsByCode(String code);
 
-    boolean existsByCodeAndIdNot(String code, UUID id);
+    boolean existsByCodeAndIdNot(String code, Long id);
 
     @Query(value = "SELECT nextval('subject_code_seq')" ,nativeQuery = true)
     Long getNextSequenceSubject();

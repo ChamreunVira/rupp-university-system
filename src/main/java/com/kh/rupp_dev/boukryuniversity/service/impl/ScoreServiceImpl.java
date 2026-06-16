@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +36,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public ScoreResponse update(UUID id, ScoreRequest request) {
+    public ScoreResponse update(Long id, ScoreRequest request) {
         Score score = scoreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Score not found with id: " + id));
 
@@ -57,7 +56,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public ScoreResponse getById(UUID id) {
+    public ScoreResponse getById(Long id) {
         Score score = scoreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subject Not Found: " + id));
         log.info("Getting score with id: {}", id);
@@ -74,7 +73,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public List<ScoreResponse> findByStudentId(UUID studentId) {
+    public List<ScoreResponse> findByStudentId(Long studentId) {
 //        log.info("Student was found with id {}", studentId);
 //        return scoreMapper.toResponseList(
 //                scoreRepository.findByStudentId(studentId)
@@ -83,7 +82,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public List<ScoreResponse> findByCourse(UUID semesterId, UUID subjectId) {
+    public List<ScoreResponse> findByCourse(Long semesterId, Long subjectId) {
 //        CourseId courseId = new CourseId(semesterId, subjectId);
 //        log.info("Course was found with id {} from semester {}", courseId, semesterId );
 //        return scoreMapper.toResponseList(
@@ -93,7 +92,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(Long id) {
         Score score = scoreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subject Not Found: " + id));
         log.info("Deleting score with id: {}", id);

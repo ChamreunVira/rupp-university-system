@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/roles")
@@ -23,9 +22,9 @@ public class RoleController {
 
 	private final RoleService roleService;
 
-	@Operation(summary = "Retrieve role by UUID.")
+	@Operation(summary = "Retrieve role by Long.")
 	@GetMapping("/{uuid}")
-	public ResponseEntity<SingleResponse<RoleResponse>> findById(@PathVariable UUID uuid) {
+	public ResponseEntity<SingleResponse<RoleResponse>> findById(@PathVariable Long uuid) {
 		RoleResponse roleResponse = roleService.findById(uuid);
 		return ResponseEntity.ok().body(SingleResponse.success("Success to retrieve role.", roleResponse));
 	}
@@ -53,17 +52,17 @@ public class RoleController {
 				.body(SingleResponse.success("Successfully created role.", response));
 	}
 
-	@Operation(summary = "Update role with UUID pathVariable and RoleRequest.")
+	@Operation(summary = "Update role with Long pathVariable and RoleRequest.")
 	@PutMapping("/{uuid}")
-	public ResponseEntity<SingleResponse<RoleResponse>> update(@PathVariable UUID uuid,
+	public ResponseEntity<SingleResponse<RoleResponse>> update(@PathVariable Long uuid,
 			@Valid @RequestBody RoleRequest request) {
 		RoleResponse response = roleService.update(uuid, request);
 		return ResponseEntity.ok().body(SingleResponse.success("Successfully updated role.", response));
 	}
 
-	@Operation(summary = "Update status role with UUID pathVariable.")
+	@Operation(summary = "Update status role with Long pathVariable.")
 	@PutMapping("/status/{uuid}")
-	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable UUID uuid,
+	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable Long uuid,
 			@RequestBody Map<String, String> request) {
 		roleService.updateStatus(uuid, request.get("status"));
 		return ResponseEntity.ok().body(SingleResponse.success("Successfully deleted role.", null));
@@ -71,7 +70,7 @@ public class RoleController {
 
 	@Operation(summary = "Assign permission to role.")
 	@PostMapping("/{roleId}/permission")
-	public ResponseEntity<SingleResponse<RoleResponse>> assignPermission(@PathVariable UUID roleId,
+	public ResponseEntity<SingleResponse<RoleResponse>> assignPermission(@PathVariable Long roleId,
 			@Valid @RequestBody AssignPermissionRequest request) {
 		RoleResponse response = roleService.addPermission(roleId, request);
 		return ResponseEntity.ok().body(SingleResponse.success("Successfully assigned role.", response));
@@ -79,7 +78,7 @@ public class RoleController {
 
 	@Operation(summary = "Update Assign permission to role.")
 	@PutMapping("/{roleId}/permission")
-	public ResponseEntity<SingleResponse<RoleResponse>> updatePermission(@PathVariable UUID roleId,
+	public ResponseEntity<SingleResponse<RoleResponse>> updatePermission(@PathVariable Long roleId,
 			@Valid @RequestBody AssignPermissionRequest request) {
 		RoleResponse response = roleService.setPermission(roleId, request);
 		return ResponseEntity.ok().body(SingleResponse.success("Successfully updated role.", response));
@@ -87,8 +86,8 @@ public class RoleController {
 
 	@Operation(summary = "Remove permission from role.")
 	@DeleteMapping("/{roleId}/permission/{permissionId}")
-	public ResponseEntity<SingleResponse<Void>> removePermission(@PathVariable UUID roleId,
-			@PathVariable UUID permissionId) {
+	public ResponseEntity<SingleResponse<Void>> removePermission(@PathVariable Long roleId,
+			@PathVariable Long permissionId) {
 		roleService.deletePermission(roleId, permissionId);
 		return ResponseEntity.ok().body(SingleResponse.success("Successfully removed role.", null));
 	}

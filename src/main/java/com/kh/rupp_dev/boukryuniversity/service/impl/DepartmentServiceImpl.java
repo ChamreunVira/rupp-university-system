@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -61,14 +60,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     @Transactional(readOnly = true)
-    public DepartmentResponse getById(UUID id) {
+    public DepartmentResponse getById(Long id) {
         Department department = findByOrThrow(id);
         log.info("Department found with id {}", id);
         return departmentMapper.toResponse(department);
     }
 
     @Override
-    public DepartmentResponse update(UUID id, DepartmentRequest request) {
+    public DepartmentResponse update(Long id, DepartmentRequest request) {
         try {
             Department department = findByOrThrow(id);
             validateDuplicate(id, request);
@@ -90,7 +89,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(Long id) {
         Department department = findByOrThrow(id);
         departmentRepository.delete(department);
         log.info("Department deleted with id {}", id);
@@ -102,13 +101,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
-    private void validateDuplicate(UUID id, DepartmentRequest request) {
+    private void validateDuplicate(Long id, DepartmentRequest request) {
         if (departmentRepository.existsByNameAndIdNot(request.getName(), id)) {
             throw new DuplicateResourceException("Department name already exists");
         }
     }
 
-    private Department findByOrThrow(UUID id) {
+    private Department findByOrThrow(Long id) {
         return departmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + id));
     }

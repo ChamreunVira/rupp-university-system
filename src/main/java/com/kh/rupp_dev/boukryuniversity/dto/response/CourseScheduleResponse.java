@@ -1,5 +1,6 @@
 package com.kh.rupp_dev.boukryuniversity.dto.response;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,5 @@ public class CourseScheduleResponse {
     private String endTime;
 
     private Integer room;
+
 }

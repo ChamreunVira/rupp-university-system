@@ -19,8 +19,8 @@ public class ClassRequest {
     @NotBlank(message = "Class name is required.")
     private String name;
 
-    @NotBlank(message = "Department id is required.")
-    private String departmentId;
+    @NotNull(message = "Department id is required.")
+    private Long departmentId;
 
     @NotBlank(message = "Academic year is required.")
     private String academicYear;

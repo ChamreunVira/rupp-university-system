@@ -1,7 +1,6 @@
 package com.kh.rupp_dev.boukryuniversity.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,15 +22,15 @@ import lombok.Setter;
 public class AuditLog {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "audit_id", updatable = false, nullable = false)
-	private UUID id;
+	private Long id;
 
 	@Column(name = "table_name", nullable = false)
 	private String tableName;
 
 	@Column(name = "record_id")
-	private UUID recordId;
+	private Long recordId;
 
 	@Column(name = "action")
 	private String action;
