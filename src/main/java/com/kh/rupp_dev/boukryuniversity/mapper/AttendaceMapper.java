@@ -10,6 +10,7 @@ public class AttendaceMapper {
 
     public ClassSchedule toSchedule(CreateScheduleRequest request) {
         if (request == null) return null;
+        
         return ClassSchedule.builder()
                 .courseId(request.getCourseId())
                 .courseName(request.getCoursName())
@@ -27,6 +28,7 @@ public class AttendaceMapper {
 
     public ScheduleResponse toScheduleResponse(ClassSchedule schedule) {
         if (schedule == null) return null;
+
         return ScheduleResponse.builder()
                 .scheduleId(schedule.getId())
                 .courseName(schedule.getCourseName())
