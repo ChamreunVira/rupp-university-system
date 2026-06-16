@@ -72,8 +72,8 @@ springdoc:
   packages-to-scan: com.rupp.tola.dev.scoring_management_system
 
 uploads:
-  department: /home/chamreunvira/Desktop/SpringBoot/BouKryUniversitySystem/uploads/department
-  subject: /home/chamreunvira/Desktop/SpringBoot/BouKryUniversitySystem/uploads/subject
+  department: /home/chamreunvira/Desktop/rupp-system-api/uploads/department
+  subject: /home/chamreunvira/Desktop/rupp-system-api/uploads/subject
 
 attendance:
   jwt:
