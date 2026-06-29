@@ -2,31 +2,43 @@ package com.kh.rupp_dev.boukryuniversity.mapper;
 
 import com.kh.rupp_dev.boukryuniversity.dto.request.UserRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.UserResponse;
-
 import com.kh.rupp_dev.boukryuniversity.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-@Mapper(componentModel = "spring")
-public interface UserMapper {
+import org.springframework.stereotype.Component;
 
-	@Mapping(target = "id" , ignore = true)
-	@Mapping(target = "password", ignore = true)
-	@Mapping(target = "verificationToken" , ignore = true)
-	@Mapping(target = "verified" , ignore = true)
-	@Mapping(target = "role" , ignore = true)
-	@Mapping(target = "status" , ignore = true)
-	@Mapping(target = "otp" , ignore = true)
-	@Mapping(target = "verifiedOtp" , ignore = true)
-	@Mapping(target = "expiryOtp" , ignore = true)
-	@Mapping(target = "attempt", ignore = true)
-	@Mapping(target = "lockTime" , ignore = true)
-	@Mapping(target = "createdAt" , ignore = true)
-	@Mapping(target = "refreshToken" , ignore = true)
-	@Mapping(target = "courses" , ignore = true)
-	@Mapping(target = "authorities" , ignore = true)
-	User toEntity(UserRequest request);
+@Component
+public class UserMapper {
 
-	@Mapping(target = "role", ignore = true)
-	@Mapping(target = "refreshToken" , ignore = true)
-	UserResponse toResponse(User user);
+    public User toEntity(UserRequest request) {
+        if (request == null) {
+            return null;
+        }
+
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setPhoneNumber(request.getPhoneNumber());
+        user.setBio(request.getBio());
+        return user;
+    }
+
+    public UserResponse toResponse(User user) {
+        if (user == null) {
+            return null;
+        }
+
+        return UserResponse.builder()
+                .id(user.getId())
+                .fullName(user.getFullName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .bio(user.getBio())
+                .verified(user.isVerified())
+                .verificationToken(user.getVerificationToken())
+                .refreshToken(user.getRefreshToken().getToken())
+                .status(user.isStatus())
+                .role(user.getRole().getName())
+                .attempt(user.getAttempt())
+                .lockTime(user.getLockTime())
+                .build();
+    }
 }

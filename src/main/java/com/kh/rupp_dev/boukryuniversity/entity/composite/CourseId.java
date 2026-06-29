@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Embeddable
 @Data
@@ -18,9 +17,9 @@ public class CourseId implements Serializable {
 
 
     @Column(name = "semester_id")
-    private UUID semesterId;
+    private Long semesterId;
 
     @Column(name = "subject_id")
-    private UUID subjectId;
+    private Long subjectId;
 
 }

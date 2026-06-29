@@ -1,7 +1,6 @@
 package com.kh.rupp_dev.boukryuniversity.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +24,9 @@ import jakarta.persistence.Table;
 public class UploadError {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "upload_error_id")
-	private UUID id;
+	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "upload_batch_id")

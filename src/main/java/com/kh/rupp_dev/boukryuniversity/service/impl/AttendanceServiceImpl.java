@@ -18,19 +18,21 @@ import com.kh.rupp_dev.boukryuniversity.repository.ClassScheduleRepository;
 import com.kh.rupp_dev.boukryuniversity.service.AttendanceService;
 import com.kh.rupp_dev.boukryuniversity.validation.DistanceValidation;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.crypto.SecretKey;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -45,19 +47,16 @@ public class AttendanceServiceImpl implements AttendanceService {
     private String jwtSecret;
 
     @Value("${attendance.jwt.expiry-minutes:10}")
-    private Long sessionExpired;
+    private int sessionExpired;
 
     @Override
     public ScheduleResponse createSchedule(CreateScheduleRequest request) {
-
         ClassSchedule schedule = mapper.toSchedule(request);
         ClassSchedule saved = scheduleRepository.save(schedule);
 
-        String allowedDayName = saved
-            .getAllowedDay()
-            .stream()
-            .map(day -> day.name().substring(0, 3))
-            .collect(Collectors.joining(", "));
+        String allowedDayName = saved.getAllowedDay().stream()
+                .map(day -> day.name().substring(0, 3))
+                .collect(Collectors.joining(", "));
 
         return mapper.toScheduleResponse(saved);
     }
@@ -66,29 +65,21 @@ public class AttendanceServiceImpl implements AttendanceService {
     public AttendanceSessionResponse startSession(StartSessionRequest request, String instructorId) {
 
         ClassSchedule schedule = scheduleRepository.findById(request.getScheduleId())
-            .orElseThrow(() ->
-                new IllegalArgumentException("Schedule not found: " + request.getScheduleId())
-        );
+                .orElseThrow(() -> new IllegalArgumentException("Schedule not found: " + request.getScheduleId()));
 
         DayOfWeek today = LocalDateTime.now().getDayOfWeek();
-        if (!schedule.getAllowedDay().contains(today)) {
+        if (!schedule.getAllowedDay().contains(today)){
             throw new IllegalStateException(
-                "Connot start session on " +
-                    today.name() +
-                    "for this class. Allowed days: " +
-                    schedule.getAllowedDay()
+                    "Connot start session on " + today.name() +
+                            "for this class. Allowed days: " + schedule.getAllowedDay()
             );
         }
 
         LocalDateTime now = LocalDateTime.now();
-
         if (now.isBefore(schedule.getStartTime()) || now.isAfter(schedule.getEndTime())) {
             throw new IllegalStateException(
-                "Cannot start session outside class hours. " +
-                    "Class runs " +
-                    schedule.getStartTime() +
-                    " - " +
-                    schedule.getEndTime()
+                    "Cannot start session outside class hours. " +
+                            "Class runs " + schedule.getStartTime() + " - " + schedule.getEndTime()
             );
         }
 
@@ -98,6 +89,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(sessionExpired);
         String qrToken = generateSessionQrToken(schedule.getId(), expiresAt);
+
 
         AttendanceSession session = AttendanceSession.builder()
             .schedule(schedule)
@@ -122,45 +114,39 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public AttendanceSessionResponse closeSession(Long sessionId, String instructorId) {
-
-        AttendanceSession session = sessionRepository
-            .findById(sessionId)
-            .orElseThrow(() ->
-                new ResourceNotFoundException("Session not found :" + sessionId)
-            );
+        AttendanceSession session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Session not found :" + sessionId ));
 
         if (!session.getInstructor().equals(instructorId)) {
-            throw new SecurityException(
-                "You are not allowed authorized to close this session."
-            );
+            throw new SecurityException("You are not allowed authorized to close this session.");
         }
 
         session.setStatus(SessionStatus.CLOSED);
         sessionRepository.save(session);
         return null;
-
     }
 
     @Override
     public AttendanceRecord checkIn(CheckInRequest request) {
+        AttendanceSession session = sessionRepository.findByQrToken(request.token())
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid Qr Token"));
 
-        AttendanceSession session = sessionRepository.findByQrToken(request.getQrToken())
-                .orElseThrow(() -> new ResourceNotFoundException("Invalid Qr Token."));
-
-        if (session.getStatus() != SessionStatus.ACTIVE) {
-            throw new IllegalStateException("Session is expired or closed");
+        if (session.getStatus() !=  SessionStatus.ACTIVE) {
+            throw new SecurityException("You are not allowed authorized to close this session.");
         }
 
         DayOfWeek today = LocalDateTime.now().getDayOfWeek();
+
         ClassSchedule schedule = session.getSchedule();
+
         if (schedule.getAllowedDay().contains(today)) {
             throw new IllegalStateException("Attendance not allowed on " + today.name() +
                     ". Allowed days: " + schedule.getAllowedDay());
         }
 
         double disstance = DistanceValidation.haversine(
-                request.getLatitude(),
-                request.getLongitude(),
+                request.latitute(),
+                request.longtitute(),
                 schedule.getLatitude(),
                 schedule.getLongtitude()
         );
@@ -172,7 +158,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             );
         }
 
-        if (recordRepository.existsByStudentIdAndSession(request.getStudentId(), session.getId())) {
+        if (recordRepository.existsByStudentIdAndSession(request.studentId(), session)) {
             throw new IllegalStateException("You have already checked in for this session.");
         }
 
@@ -184,7 +170,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                 : AttendanceStatus.PRESENT;
 
         AttendanceRecord record = AttendanceRecord.builder()
-                .studentId(request.getStudentId())
+                .studentId(request.studentId())
                 .session(session)
                 .attendanceTime(LocalDateTime.now())
                 .status(status)
@@ -195,8 +181,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public List<ScheduleResponse> getAll() {
-        return scheduleRepository.findAll()
-                .stream()
+        return scheduleRepository.findAll().stream()
                 .map(mapper::toScheduleResponse)
                 .toList();
     }
@@ -219,26 +204,20 @@ public class AttendanceServiceImpl implements AttendanceService {
         ClassSchedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found with id: " + scheduleId));
         mapper.updateFromRequest(request, schedule);
-        return mapper.toScheduleResponse(scheduleRepository.save(schedule));
+        return mapper.toScheduleResponse(schedule);
     }
 
-    private String generateSessionQrToken(
-        Long schdeduleId,
-        LocalDateTime expiresAt
-    ) {
+    private String generateSessionQrToken(Long schdeduleId, LocalDateTime expiresAt) {
         return Jwts.builder()
-            .claim("scheduleId", schdeduleId)
-            .subject("Session")
-            .issuedAt(new Date(System.currentTimeMillis()))
-            .expiration(
-                Date.from(expiresAt.atZone(ZoneId.systemDefault()).toInstant())
-            )
-            .signWith(getSigningKey())
-            .compact();
+                .claim("ScheduleId", schdeduleId)
+                .subject("session")
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + sessionExpired))
+                .signWith(getSigningKey())
+                .compact();
     }
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
-
 }

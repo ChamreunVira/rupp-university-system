@@ -7,19 +7,18 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ScoreResponse {
-    private UUID id;
+    private Long id;
 
-    private UUID studentId;
-    private UUID subjectId;
-    private UUID semesterId;
-    private UUID userId;
+    private Long studentId;
+    private Long subjectId;
+    private Long semesterId;
+    private Long userId;
 
     private BigDecimal score;
     private Integer version;

@@ -3,21 +3,46 @@ package com.kh.rupp_dev.boukryuniversity.mapper;
 import com.kh.rupp_dev.boukryuniversity.dto.request.SemesterRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.SemesterResponse;
 import com.kh.rupp_dev.boukryuniversity.entity.Semester;
-import org.mapstruct.*;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface SemesterMapper {
+@Component
+public class SemesterMapper {
 
-    @Mapping(target = "id" , ignore = true)
-    @Mapping(target = "startDate" , ignore = true)
-    @Mapping(target = "endDate" , ignore = true)
-    Semester toEntity(SemesterRequest request);
+    public Semester toEntity(SemesterRequest request) {
+        if (request == null) {
+            return null;
+        }
 
-    SemesterResponse toResponse(Semester semester);
+        Semester semester = new Semester();
+        semester.setName(request.getName());
+        semester.setDescription(request.getDescription());
+        return semester;
+    }
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id" , ignore = true)
-    @Mapping(target = "startDate" , ignore = true)
-    @Mapping(target = "endDate" , ignore = true)
-    void updateFromRequest(SemesterRequest request, @MappingTarget Semester semester);
+    public SemesterResponse toResponse(Semester semester) {
+        if (semester == null) {
+            return null;
+        }
+
+        return SemesterResponse.builder()
+                .id(semester.getId())
+                .name(semester.getName())
+                .startDate(semester.getStartDate())
+                .endDate(semester.getEndDate())
+                .description(semester.getDescription())
+                .build();
+    }
+
+    public void updateFromRequest(SemesterRequest request, Semester semester) {
+        if (request == null) {
+            return;
+        }
+
+        if (request.getName() != null) {
+            semester.setName(request.getName());
+        }
+        if (request.getDescription() != null) {
+            semester.setDescription(request.getDescription());
+        }
+    }
 }

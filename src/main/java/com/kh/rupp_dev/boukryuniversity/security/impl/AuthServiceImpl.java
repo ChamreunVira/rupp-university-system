@@ -212,10 +212,10 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public void delete(UUID uuid) {
-		User user = userRepository.findById(uuid)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + uuid));
-		log.info("Delete user with UUID: {}", uuid);
+	public void delete(Long id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+		log.info("Delete user with id: {}", id);
 		userRepository.delete(user);
 	}
 
@@ -226,9 +226,9 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public User getUser(UUID uuid) {
-		User user = userRepository.findById(uuid)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with UUID: " + uuid));
+	public User getUser(Long id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
 		if (!user.isVerified()) {
 			throw new RuntimeException("User isn't verified account.");
 		}
@@ -236,8 +236,8 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public void updateStatus(UUID uuid, String status) {
-		User user = this.findByOrThrow(uuid);
+	public void updateStatus(Long id, String status) {
+		User user = this.findByOrThrow(id);
 		user.setStatus(Boolean.parseBoolean(status));
 		userRepository.save(user);
 	}
@@ -257,9 +257,9 @@ public class AuthServiceImpl implements AuthService {
 		return response;
 	}
 
-	private User findByOrThrow(UUID uuid) {
-		return userRepository.findById(uuid)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with UUID: " + uuid));
+	private User findByOrThrow(Long id) {
+		return userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
 	}
 
 	@Override

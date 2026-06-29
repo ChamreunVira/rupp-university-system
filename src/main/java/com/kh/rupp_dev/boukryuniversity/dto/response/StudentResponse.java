@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -17,13 +16,13 @@ import java.util.UUID;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class StudentResponse {
 
-    private UUID id;
+    private Long id;
 
-    private UUID departmentId;
+    private Long departmentId;
     
     private String departmentName;
 
-    private UUID classId;
+    private Long classId;
     
     private String className;
 

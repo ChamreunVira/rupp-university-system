@@ -2,7 +2,6 @@ package com.kh.rupp_dev.boukryuniversity.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,9 +18,9 @@ import lombok.Setter;
 public class Score extends BaseEntity implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "score_id")
-	private UUID id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_id")

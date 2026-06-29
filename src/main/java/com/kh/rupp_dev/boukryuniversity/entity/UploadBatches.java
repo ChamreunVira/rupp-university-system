@@ -1,7 +1,6 @@
 package com.kh.rupp_dev.boukryuniversity.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,9 +29,9 @@ import jakarta.persistence.Table;
 public class UploadBatches {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "upload_batch_id")
-	private UUID id;
+	private Long id;
 
 	@Column(name = "file_name", nullable = false)
 	private String fileName;

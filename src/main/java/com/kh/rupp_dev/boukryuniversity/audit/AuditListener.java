@@ -12,7 +12,6 @@ import java.lang.reflect.Modifier;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.WeakHashMap;
 
 @Component
@@ -118,7 +117,6 @@ public class AuditListener {
                                     pkgName.startsWith("java.lang") ||
                                     pkgName.startsWith("java.time") ||
                                     pkgName.startsWith("java.math") ||
-                                    type.getName().equals("java.util.UUID") ||
                                     type.getName().equals("java.util.Date")
                             ));
 
@@ -139,7 +137,7 @@ public class AuditListener {
         }
     }
 
-    private UUID extractId(Object entity) {
+    private Long extractId(Object entity) {
         try {
             Class<?> currentClass = entity.getClass();
             while (currentClass != null && currentClass != Object.class) {
@@ -149,12 +147,16 @@ public class AuditListener {
                         field.setAccessible(true);
                         Object value = field.get(entity);
 
-                        if (value instanceof UUID) {
-                            return (UUID) value;
+                        if (value instanceof Long) {
+                            return (Long) value;
+                        }
+
+                        if (value instanceof Number) {
+                            return ((Number) value).longValue();
                         }
 
                         if (value != null) {
-                            return UUID.fromString(value.toString());
+                            return Long.parseLong(value.toString());
                         }
                     }
                 }

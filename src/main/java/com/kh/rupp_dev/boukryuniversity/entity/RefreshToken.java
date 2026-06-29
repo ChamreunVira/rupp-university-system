@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_refresh_token")
@@ -16,9 +15,9 @@ import java.util.UUID;
 public class RefreshToken extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "refresh_token_id")
-    private UUID id;
+    private Long id;
 
     @Column(name = "token" , nullable = false)
     private String token;

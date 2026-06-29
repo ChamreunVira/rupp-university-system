@@ -3,7 +3,6 @@ package com.kh.rupp_dev.boukryuniversity.entity;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +30,7 @@ public class ClassSchedule {
     private Long id;
 
     @Column(nullable = false)
-    private UUID courseId;
+    private Long courseId;
 
     @Column(nullable = false, length = 100)
     private String courseName;

@@ -3,27 +3,38 @@ package com.kh.rupp_dev.boukryuniversity.mapper;
 import com.kh.rupp_dev.boukryuniversity.dto.request.UploadBatchesRequest;
 import com.kh.rupp_dev.boukryuniversity.dto.response.UploadBatchesResponse;
 import com.kh.rupp_dev.boukryuniversity.entity.UploadBatches;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface UploadBatchesMapper {
+@Component
+public class UploadBatchesMapper {
 
-        @Mappings({
-                        @Mapping(target = "id", ignore = true),
-                        @Mapping(target = "user", ignore = true),
-                        @Mapping(target = "completedAt", ignore = true),
-                        @Mapping(target = "createdAt", ignore = true)
-        })
-        UploadBatches toEntity(UploadBatchesRequest request);
+    public UploadBatches toEntity(UploadBatchesRequest request) {
+        if (request == null) {
+            return null;
+        }
 
-        @Mappings({
-                        @Mapping(target = "userId", ignore = true),
-                        @Mapping(target = "username", ignore = true)
-        })
+        return UploadBatches.builder()
+                .fileName(request.getFileName())
+                .status(request.getStatus())
+                .totalRow(request.getTotalRow())
+                .successRow(request.getSuccessRow())
+                .failRow(request.getFailRow())
+                .build();
+    }
 
-        @Mapping(target = "createAt", ignore = true)
-        UploadBatchesResponse toResponse(UploadBatches uploadBatches);
+    public UploadBatchesResponse toResponse(UploadBatches uploadBatches) {
+        if (uploadBatches == null) {
+            return null;
+        }
 
+        return UploadBatchesResponse.builder()
+                .id(uploadBatches.getId())
+                .fileName(uploadBatches.getFileName())
+                .status(uploadBatches.getStatus())
+                .totalRow(uploadBatches.getTotalRow())
+                .successRow(uploadBatches.getSuccessRow())
+                .failRow(uploadBatches.getFailRow())
+                .completedAt(uploadBatches.getCompletedAt())
+                .build();
+    }
 }

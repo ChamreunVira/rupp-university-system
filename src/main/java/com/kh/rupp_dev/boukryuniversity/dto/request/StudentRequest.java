@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -13,9 +12,9 @@ import java.util.UUID;
 @Builder
 public class StudentRequest {
 
-    private UUID id;
+    private Long id;
 
-    private UUID classId;
+    private Long classId;
 
     @NotBlank(message = "Khmer First name is required.")
     @Size(min = 2, max = 30, message = "First name must be between 10 - 30 characters.")

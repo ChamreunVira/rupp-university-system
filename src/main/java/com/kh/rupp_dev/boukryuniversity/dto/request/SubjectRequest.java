@@ -1,6 +1,7 @@
 package com.kh.rupp_dev.boukryuniversity.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class SubjectRequest {
 
-    @NotBlank(message = "Department id is required.")
-    private String departmentId;
+    @NotNull(message = "Department id is required.")
+    private Long departmentId;
 
     private MultipartFile image;
 

@@ -1,7 +1,6 @@
 package com.kh.rupp_dev.boukryuniversity.service;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import com.kh.rupp_dev.boukryuniversity.dto.response.ClassResponse;
 import com.kh.rupp_dev.boukryuniversity.dto.request.ImportStudentRequest;
@@ -17,15 +16,15 @@ public interface StudentService {
 
 	StudentResponse create(StudentRequest request);
 
-	StudentResponse getById(UUID uuid);
+	StudentResponse getById(Long id);
 
 	Page<StudentResponse> getAll(Pageable pageable);
 
-	StudentResponse update(UUID uuid, StudentRequest request);
+	StudentResponse update(Long id, StudentRequest request);
 
-	void delete(UUID uuid);
+	void delete(Long id);
 
-	ClassResponse getClassByStudentId(UUID uuid);
+	ClassResponse getClassByStudentId(Long id);
 
 	UploadBatchesResponse importStudents(ImportStudentRequest request) throws IOException;
 

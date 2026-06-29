@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +12,7 @@ import java.util.UUID;
 @Builder
 public class StudentsFilterResponse {
 
-    private UUID studentId;
+    private Long studentId;
 
     private String studentCode;
 
@@ -27,9 +26,9 @@ public class StudentsFilterResponse {
 
     private String gender;
 
-    private UUID classId;
+    private Long classId;
 
     private String className;
 
-    private UUID departmentId;
+    private Long departmentId;
 }

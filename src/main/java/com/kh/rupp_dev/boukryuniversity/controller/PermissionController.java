@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/permissions")
@@ -22,7 +21,7 @@ public class PermissionController {
 
 	@GetMapping("/{id}")
 	@Operation(summary = "Retrieve permission by id.")
-	public ResponseEntity<SingleResponse<PermissionResponse>> getById(@PathVariable UUID id) {
+	public ResponseEntity<SingleResponse<PermissionResponse>> getById(@PathVariable Long id) {
 		PermissionResponse response = permissionService.getById(id);
 		return ResponseEntity.ok().body(SingleResponse.success("Success to retrieve permission by id.", response));
 	}
@@ -51,14 +50,14 @@ public class PermissionController {
 
 	@PutMapping("/{id}")
 	@Operation(summary = "Update permission with request.")
-	public ResponseEntity<SingleResponse<PermissionResponse>> update(@PathVariable UUID id,
+	public ResponseEntity<SingleResponse<PermissionResponse>> update(@PathVariable Long id,
 			@Valid @RequestBody PermissionRequest request) {
 		PermissionResponse response = permissionService.update(id, request);
 		return ResponseEntity.ok().body(SingleResponse.success("Success to update permission.", response));
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable UUID id) {
+	public ResponseEntity<SingleResponse<Void>> delete(@PathVariable Long id) {
 		permissionService.delete(id);
 		return ResponseEntity.ok().body(SingleResponse.success("Success to delete permission.", null));
 	}
