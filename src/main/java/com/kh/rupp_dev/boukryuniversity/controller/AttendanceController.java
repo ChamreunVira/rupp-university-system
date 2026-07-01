@@ -66,6 +66,4 @@ public class AttendanceController {
         return ResponseEntity.ok(service.updateSchedule(scheduleId, request));
     }
 
-
-
 }

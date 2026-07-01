@@ -22,5 +22,6 @@ public class AuditLogServiceImpl implements AuditLogService {
                 .map(auditLogMapper::toResponse)
                 .toList();
     }
+
 }
 

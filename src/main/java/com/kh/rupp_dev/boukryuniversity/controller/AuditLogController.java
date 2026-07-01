@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("audit")
 public class AuditLogController {
     private final AuditLogService auditLogService;
+
     @GetMapping
     public ResponseEntity<List<AuditLogResponse>> getAll() {
         return ResponseEntity.ok(auditLogService.getAllLogs());
